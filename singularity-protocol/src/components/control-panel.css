@@ -1,0 +1,238 @@
+/* =========================================================
+   CONTROL PANEL — RESPONSIVE (MOBILE + DESKTOP)
+   ========================================================= */
+
+:root {
+  --cp-bg: rgba(10, 15, 28, 0.85);
+  --cp-border: rgba(0, 224, 255, 0.2);
+  --cp-glow: #00E0FF;
+  --cp-accent: #7B61FF;
+  --cp-muted: rgba(0, 224, 255, 0.6);
+}
+
+/* ── Container ── */
+.cp {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* ── Toggle Button ── */
+.cp__toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cp-bg);
+  border: 1px solid var(--cp-border);
+  backdrop-filter: blur(12px);
+  color: var(--cp-glow);
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: 0.25s ease;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+}
+
+.cp__toggle:hover {
+  box-shadow: 0 0 14px #00e0ff55;
+}
+
+/* ── Panel ── */
+.cp__body {
+  margin-top: 10px;
+  width: 240px; /* mobile default */
+  padding: 14px;
+  border-radius: 14px;
+
+  background: var(--cp-bg);
+  border: 1px solid var(--cp-border);
+  backdrop-filter: blur(14px);
+
+  box-shadow:
+    0 0 20px #00e0ff22,
+    inset 0 0 20px #00e0ff11;
+
+  animation: cpEnter 0.3s ease;
+}
+
+@keyframes cpEnter {
+  from { opacity: 0; transform: translateY(10px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Title ── */
+.cp__title {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-align: center;
+  margin-bottom: 12px;
+  color: var(--cp-glow);
+}
+
+/* ── Rows ── */
+.cp__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.cp__row--col {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* ── Labels ── */
+.cp__label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--cp-muted);
+}
+
+/* ── Toggle Button ── */
+.cp__toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--cp-border);
+  background: transparent;
+}
+
+.cp__toggle-btn-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #444;
+}
+
+.cp__toggle-btn--on {
+  border-color: var(--cp-glow);
+  color: var(--cp-glow);
+  box-shadow: 0 0 8px #00e0ff55;
+}
+
+.cp__toggle-btn--on .cp__toggle-btn-dot {
+  background: var(--cp-glow);
+}
+
+/* ── Mode Button ── */
+.cp__mode-btn {
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--cp-border);
+  color: var(--cp-glow);
+  font-size: 9px;
+}
+
+/* Combat */
+.cp--combat {
+  --cp-glow: #FF3B3B;
+}
+
+.cp__mode-btn--combat {
+  border-color: #FF3B3B;
+  color: #FF3B3B;
+}
+
+/* ── Slider ── */
+.cp__slider-wrap {
+  position: relative;
+}
+
+.cp__slider {
+  width: 100%;
+  appearance: none;
+  height: 2px;
+  background: #ffffff22;
+}
+
+.cp__slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  background: var(--cp-glow);
+  border-radius: 50%;
+}
+
+.cp__slider-fill {
+  position: absolute;
+  height: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, var(--cp-accent), var(--cp-glow));
+}
+
+/* ── Divider ── */
+.cp__divider {
+  height: 1px;
+  margin: 10px 0;
+  background: linear-gradient(90deg, transparent, #00e0ff44, transparent);
+}
+
+/* ── Footer ── */
+.cp__footer {
+  font-size: 8px;
+  text-align: center;
+  color: var(--cp-muted);
+}
+
+/* =========================================================
+   🖥️ DESKTOP VERSION (AUTO SWITCH)
+   ========================================================= */
+
+@media (min-width: 640px) {
+
+  .cp {
+    bottom: 28px;
+    right: 28px;
+  }
+
+  .cp__body {
+    width: 360px;              /* 🔥 bigger */
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .cp__title {
+    font-size: 12px;
+    margin-bottom: 18px;
+  }
+
+  .cp__row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .cp__label {
+    font-size: 11px;
+  }
+
+  .cp__toggle-btn {
+    padding: 6px 12px;
+  }
+
+  .cp__mode-btn {
+    width: 140px;
+    padding: 8px 0;
+    font-size: 11px;
+  }
+
+  .cp__slider {
+    height: 4px;
+  }
+
+  .cp__slider-fill {
+    height: 4px;
+  }
+
+  .cp__footer {
+    font-size: 10px;
+  }
+}

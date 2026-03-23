@@ -1,0 +1,289 @@
+/* ============================================================
+   SINGULARITY PROTOCOL — about.css
+   About Us section — Section 8.3
+   ============================================================ */
+
+/* ── Section Base ── */
+.about {
+  position:   relative;
+  padding:    var(--space-4xl) 0;
+  overflow:   hidden;
+}
+
+/* Top border glow */
+.about::before {
+  content:    '';
+  position:   absolute;
+  top:        0;
+  left:       10%;
+  right:      10%;
+  height:     1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(123, 97, 255, 0.3),
+    transparent
+  );
+}
+
+/* Ambient background glow — purple tint */
+.about::after {
+  content:    '';
+  position:   absolute;
+  top:        50%;
+  left:       50%;
+  transform:  translate(-50%, -50%);
+  width:      600px;
+  height:     600px;
+  background: radial-gradient(
+    circle,
+    rgba(123, 97, 255, 0.06) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index:    0;
+}
+
+/* ── Inner wrapper ── */
+.about__inner {
+  position:   relative;
+  z-index:    1;
+  max-width:  1280px;
+  margin:     0 auto;
+  padding:    0 var(--space-lg);
+  display:    flex;
+  flex-direction: column;
+  align-items:    center;
+  gap:        var(--space-3xl);
+}
+
+/* ── Header ── */
+.about__header {
+  text-align:     center;
+  display:        flex;
+  flex-direction: column;
+  align-items:    center;
+  gap:            var(--space-md);
+  max-width:      680px;
+}
+
+.about__label {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color:          var(--color-purple);
+  opacity:        0.8;
+}
+
+.about__headline {
+  font-family:             'Orbitron', sans-serif;
+  font-size:               clamp(1.8rem, 4vw, 2.75rem);
+  font-weight:             900;
+  letter-spacing:          0.08em;
+  text-transform:          uppercase;
+  background:              linear-gradient(90deg, #EAF4FF, #7B61FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip:         text;
+  line-height:             1.15;
+}
+
+.about__subtext {
+  font-family: 'Inter', sans-serif;
+  font-size:   clamp(1rem, 1.2vw, 1.1rem);
+  color:       rgba(234, 244, 255, 0.7);
+  line-height: 1.8;
+  max-width:   640px;
+  text-align:  center;
+}
+
+/* ── CTA ── */
+.about__cta {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      12px;
+  font-weight:    700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color:          var(--color-neon);
+  background:     transparent;
+  border:         1px solid rgba(0, 224, 255, 0.3);
+  border-radius:  var(--radius-pill);
+  padding:        12px 28px;
+  cursor:         pointer;
+  transition:     border-color 0.2s ease,
+                  box-shadow   0.2s ease,
+                  transform    0.2s ease;
+  display:        inline-flex;
+  align-items:    center;
+  gap:            var(--space-sm);
+  min-height:     44px;
+}
+
+.about__cta:hover {
+  border-color: var(--color-neon);
+  box-shadow:   0 0 20px rgba(0, 224, 255, 0.2);
+  transform:    scale(1.03);
+}
+
+.about__cta-arrow {
+  font-size:  14px;
+  transition: transform 0.2s ease;
+}
+
+.about__cta:hover .about__cta-arrow {
+  transform: translateX(4px);
+}
+
+/* ── Discipline Icons Row ── */
+.about__disciplines {
+  display:         flex;
+  justify-content: center;
+  gap:             var(--space-lg);
+  flex-wrap:       wrap;
+  width:           100%;
+}
+
+.about__discipline {
+  display:        flex;
+  flex-direction: column;
+  align-items:    center;
+  gap:            var(--space-md);
+  padding:        var(--space-xl) var(--space-lg);
+  background:     rgba(255, 255, 255, 0.03);
+  border:         1px solid rgba(255, 255, 255, 0.07);
+  border-radius:  var(--radius-md);
+  flex:           1;
+  min-width:      180px;
+  max-width:      280px;
+  transition:     border-color 0.25s ease,
+                  transform    0.25s ease,
+                  box-shadow   0.25s ease;
+
+  opacity:   0;
+  transform: translateY(24px);
+}
+
+.about__discipline.visible {
+  opacity:    1;
+  transform:  translateY(0);
+  transition: opacity      0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform    0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              box-shadow   0.25s ease;
+}
+
+.about__discipline:hover {
+  border-color: rgba(123, 97, 255, 0.4);
+  box-shadow:   0 8px 32px rgba(123, 97, 255, 0.1);
+  transform:    translateY(-6px);
+}
+
+.about__discipline-icon {
+  font-size:       2rem;
+  width:           56px;
+  height:          56px;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  background:      rgba(123, 97, 255, 0.1);
+  border:          1px solid rgba(123, 97, 255, 0.2);
+  border-radius:   var(--radius-sm);
+}
+
+.about__discipline-title {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      11px;
+  font-weight:    700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color:          var(--color-text);
+  text-align:     center;
+}
+
+.about__discipline-desc {
+  font-family: 'Inter', sans-serif;
+  font-size:   13px;
+  color:       rgba(234, 244, 255, 0.5);
+  text-align:  center;
+  line-height: 1.6;
+  max-width:   100%;
+}
+
+/* ── Mission Statement Block ── */
+.about__mission {
+  width:          100%;
+  max-width:      760px;
+  background:     rgba(123, 97, 255, 0.05);
+  border:         1px solid rgba(123, 97, 255, 0.15);
+  border-radius:  var(--radius-md);
+  padding:        var(--space-2xl) var(--space-3xl);
+  text-align:     center;
+  position:       relative;
+  overflow:       hidden;
+}
+
+/* Corner accent lines */
+.about__mission::before,
+.about__mission::after {
+  content:  '';
+  position: absolute;
+  width:    40px;
+  height:   40px;
+}
+
+.about__mission::before {
+  top:         0;
+  left:        0;
+  border-top:  1px solid rgba(0, 224, 255, 0.4);
+  border-left: 1px solid rgba(0, 224, 255, 0.4);
+}
+
+.about__mission::after {
+  bottom:       0;
+  right:        0;
+  border-bottom: 1px solid rgba(0, 224, 255, 0.4);
+  border-right:  1px solid rgba(0, 224, 255, 0.4);
+}
+
+.about__mission-quote {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      clamp(1rem, 1.5vw, 1.2rem);
+  font-weight:    400;
+  letter-spacing: 0.06em;
+  color:          rgba(234, 244, 255, 0.85);
+  line-height:    1.7;
+  font-style:     italic;
+}
+
+.about__mission-quote strong {
+  color:       var(--color-neon);
+  font-weight: 700;
+  font-style:  normal;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .about {
+    padding: var(--space-2xl) 0;
+  }
+
+  .about__inner {
+    gap: var(--space-2xl);
+  }
+
+  .about__disciplines {
+    flex-direction: column;
+    align-items:    center;
+  }
+
+  .about__discipline {
+    width:     100%;
+    max-width: 100%;
+    min-width: unset;
+  }
+
+  .about__mission {
+    padding: var(--space-xl) var(--space-lg);
+  }
+}

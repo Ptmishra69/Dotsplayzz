@@ -1,0 +1,311 @@
+/* ============================================================
+   SINGULARITY PROTOCOL — singularity.css  (v9 — Fixed Canvas)
+
+   Key change: .singularity background is now semi-transparent
+   so the fixed FixedFloatingLines canvas shows through underneath.
+   All other sections keep solid dark backgrounds that cover it.
+   Canvas never moves with scroll = zero glitch.
+   ============================================================ */
+
+.singularity {
+  --yellow-primary:  #FFD84D;
+  --yellow-soft:     #FFEFA3;
+  --yellow-electric: #FFC300;
+  --yellow-gold:     #BFA65A;
+  --cyan-primary:    #00E0FF;
+  --cyan-soft:       #7CF7C9;
+  --text-primary:    #E6F1FF;
+  --text-secondary:  #A8B2D1;
+}
+
+/* ── Section — semi-transparent so fixed canvas shows through ── */
+.singularity {
+  position:   relative;
+  padding:    var(--space-3xl) 0;
+  overflow:   visible;  /* don't clip the fixed canvas */
+
+  /* Warm amber tint — semi-transparent overlay on top of canvas */
+  background:
+    radial-gradient(circle at 50% 20%, rgba(74, 58, 18, 0.85) 0%, rgba(26, 20, 5, 0.92) 50%, rgba(10, 15, 28, 0.97) 100%);
+
+  /* Isolate stacking context — stop z-index leaking */
+  isolation: isolate;
+}
+
+/* Top border — gold + cyan */
+.singularity::before {
+  content:    '';
+  position:   absolute;
+  top:        0;
+  left:       10%;
+  right:      10%;
+  height:     1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(191, 166, 90, 0.6),
+    rgba(0, 224, 255, 0.4),
+    rgba(191, 166, 90, 0.6),
+    transparent
+  );
+  z-index: 1;
+}
+
+.singularity::after { display: none; }
+
+/* ── Header ── */
+.singularity__header {
+  position:       relative;
+  z-index:        1;
+  text-align:     center;
+  max-width:      640px;
+  margin:         0 auto var(--space-2xl);
+  padding:        0 var(--space-lg);
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-md);
+}
+
+.singularity__label {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color:          #FFD84D;
+  text-shadow:    0 0 12px rgba(255, 216, 77, 0.7);
+}
+
+.singularity__headline {
+  font-family:             'Orbitron', sans-serif;
+  font-size:               clamp(1.6rem, 3.5vw, 2.6rem);
+  font-weight:             900;
+  letter-spacing:          0.08em;
+  text-transform:          uppercase;
+  background:              linear-gradient(90deg, #00E0FF, #7CF7C9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip:         text;
+  line-height:             1.15;
+  filter:                  drop-shadow(0 0 20px rgba(0, 224, 255, 0.4));
+}
+
+.singularity__subtext {
+  font-family: 'Inter', sans-serif;
+  font-size:   clamp(0.875rem, 1.1vw, 1rem);
+  color:       #E6F1FF;
+  line-height: 1.7;
+  max-width:   500px;
+  margin:      0 auto;
+  opacity:     0.9;
+}
+
+/* ── CTAs ── */
+.singularity__ctas {
+  display:         flex;
+  gap:             var(--space-sm);
+  justify-content: center;
+  flex-wrap:       wrap;
+  margin-top:      4px;
+}
+
+.singularity__cta-primary {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      12px;
+  font-weight:    700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color:          #0A0F1C;
+  background:     linear-gradient(135deg, #00E0FF, #FFD84D);
+  border:         none;
+  border-radius:  var(--radius-pill);
+  padding:        11px 28px;
+  cursor:         pointer;
+  box-shadow:     0 0 16px rgba(0, 224, 255, 0.3),
+                  0 0 16px rgba(255, 216, 77, 0.2);
+  transition:     transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  min-height:     44px;
+}
+
+.singularity__cta-primary:hover {
+  transform:  scale(1.05);
+  background: linear-gradient(90deg, #4D7CFE, #FFC300);
+  box-shadow: 0 0 28px rgba(77, 124, 254, 0.5),
+              0 0 28px rgba(255, 195, 0, 0.4);
+}
+
+.singularity__cta-primary:active { transform: scale(0.95); }
+
+.singularity__cta-secondary {
+  font-family:     'Orbitron', sans-serif;
+  font-size:       12px;
+  font-weight:     400;
+  letter-spacing:  0.1em;
+  text-transform:  uppercase;
+  color:           #FFD84D;
+  background:      transparent;
+  border:          1px solid #FFD84D;
+  border-radius:   var(--radius-pill);
+  padding:         11px 28px;
+  cursor:          pointer;
+  transition:      border-color 0.2s ease, color 0.2s ease,
+                   box-shadow 0.2s ease, transform 0.2s ease;
+  min-height:      44px;
+  text-decoration: none;
+  display:         inline-flex;
+  align-items:     center;
+}
+
+.singularity__cta-secondary:hover {
+  border-color: #FFEFA3;
+  color:        #FFEFA3;
+  box-shadow:   0 0 18px rgba(255, 216, 77, 0.35);
+  transform:    scale(1.02);
+}
+
+/* ── Stats ── */
+.singularity__stats {
+  position:        relative;
+  z-index:         1;
+  display:         flex;
+  justify-content: center;
+  gap:             var(--space-2xl);
+  flex-wrap:       wrap;
+  padding:         var(--space-2xl) var(--space-lg);
+  margin:          0 auto;
+  max-width:       800px;
+  border-top:      1px solid rgba(191, 166, 90, 0.2);
+  border-bottom:   1px solid rgba(191, 166, 90, 0.2);
+}
+
+.singularity__stat {
+  display:        flex;
+  flex-direction: column;
+  align-items:    center;
+  gap:            4px;
+}
+
+.singularity__stat-number {
+  font-family: 'Orbitron', sans-serif;
+  font-size:   clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 900;
+  color:       #FFD84D;
+  line-height: 1;
+  text-shadow:
+    0 0 10px rgba(255, 216, 77, 0.8),
+    0 0 30px rgba(255, 195, 0,  0.6);
+}
+
+.singularity__stat-label {
+  font-family:    'Inter', sans-serif;
+  font-size:      10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color:          #A8B2D1;
+}
+
+@keyframes countGlow {
+  0%   { text-shadow: 0 0 20px rgba(255,216,77,1.0), 0 0 60px rgba(255,195,0,0.8); }
+  100% { text-shadow: 0 0 10px rgba(255,216,77,0.8), 0 0 30px rgba(255,195,0,0.6); }
+}
+.singularity__stat-number.counting { animation: countGlow 0.5s ease-out; }
+
+/* ── Energy Line ── */
+.singularity__energy-line {
+  position:   relative;
+  z-index:    1;
+  width:      160px;
+  height:     1px;
+  margin:     0 auto;
+  background: linear-gradient(90deg, transparent, #FFD84D, transparent);
+  box-shadow: 0 0 10px rgba(255, 216, 77, 0.5);
+}
+
+/* ── Cards — solid bg so canvas doesn't bleed through cards ── */
+.singularity__cards {
+  position:              relative;
+  z-index:               1;
+  display:               grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:                   var(--space-md);
+  max-width:             1280px;
+  margin:                var(--space-2xl) auto 0;
+  padding:               0 var(--space-lg);
+}
+
+.singularity__card {
+  /* Solid bg — canvas visible in gaps between cards, not through them */
+  background:    rgba(20, 8, 38, 0.94);
+  border:        1px solid rgba(191, 166, 90, 0.25);
+  border-radius: var(--radius-md);
+  padding:       var(--space-lg) var(--space-md);
+  display:       flex;
+  flex-direction: column;
+  gap:           var(--space-sm);
+  cursor:        default;
+  transition:    transform    0.25s ease-out,
+                 border-color 0.25s ease-out,
+                 box-shadow   0.25s ease-out;
+  opacity:       0;
+  transform:     translateY(24px);
+}
+
+.singularity__card.visible {
+  opacity:   1;
+  transform: translateY(0);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease-out,
+              box-shadow 0.25s ease-out;
+}
+
+.singularity__card:hover {
+  transform:    translateY(-8px) scale(1.02);
+  border-color: rgba(255, 216, 77, 0.5);
+  box-shadow:   0 6px 24px rgba(255, 216, 77, 0.12),
+                0 0 0 1px rgba(255, 216, 77, 0.08);
+}
+
+.singularity__card-icon {
+  font-size:       1.5rem;
+  width:           44px;
+  height:          44px;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  background:      radial-gradient(circle, rgba(255,239,163,0.15) 0%, rgba(255,216,77,0.08) 40%, transparent 70%);
+  border:          1px solid rgba(255, 216, 77, 0.3);
+  border-radius:   var(--radius-sm);
+  flex-shrink:     0;
+  box-shadow:      0 0 10px rgba(255, 216, 77, 0.15);
+}
+
+.singularity__card-title {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      12px;
+  font-weight:    700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color:          #00E0FF;
+  text-shadow:    0 0 10px rgba(0, 224, 255, 0.3);
+}
+
+.singularity__card-desc {
+  font-family: 'Inter', sans-serif;
+  font-size:   13px;
+  color:       #A8B2D1;
+  line-height: 1.55;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .singularity__cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .singularity        { padding: var(--space-xl) 0; }
+  .singularity__cards { grid-template-columns: 1fr; padding: 0 var(--space-md); }
+  .singularity__stats { gap: var(--space-lg); padding: var(--space-xl) var(--space-lg); }
+  .singularity__ctas  { flex-direction: column; align-items: center; }
+  .singularity__cta-primary,
+  .singularity__cta-secondary { width: 100%; max-width: 300px; justify-content: center; }
+}

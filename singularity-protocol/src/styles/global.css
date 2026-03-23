@@ -1,600 +1,225 @@
-/* ============================================================
-   SINGULARITY PROTOCOL — global.css
-   Single source of truth for all design tokens & base styles
-   Sections: Fonts → Tokens → Reset → Base → Utilities → Responsive
-   ============================================================ */
+/* ─────────────────────────────────────────────
+   SINGULARITY PROTOCOL — Global Design Tokens
+   Single source of truth for all CSS variables
+───────────────────────────────────────────── */
 
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&display=swap');
 
-/* ─────────────────────────────────────────
-   CUSTOM FONTS
-───────────────────────────────────────── */
-
-@font-face {
-  font-family: 'Blade Desire';
-  src:
-    url('/fonts/Blade_Desire.woff2') format('woff2'),
-    url('/fonts/Blade_Desire.ttf')   format('truetype');
-  font-weight: normal;
-  font-style:  normal;
-  font-display: swap;
-}
-
-/* Orbitron + Inter — loaded via <link> in index.html */
-/* Fallback stack defined here */
-
-
-/* ─────────────────────────────────────────
-   1.1 COLOR PALETTE
-───────────────────────────────────────── */
-
+/* ── FONTS ── */
 :root {
-  --color-bg:          #0A0F1C;   /* Page background & section fills        */
-  --color-neon:        #00E0FF;   /* Accents, links, glow, focus rings       */
-  --color-red:         #FF3B5C;   /* CTA hover, alerts, destructive actions  */
-  --color-secondary:   #1A2332;   /* Cards, panels, navbar glass fill        */
-  --color-text:        #EAF4FF;   /* All body copy, headings                 */
-  --color-purple:      #7B61FF;   /* Gradient partner, secondary highlights  */
-
-  /* ── Extended Palette (Section 8.1B) ── */
-  --color-void-purple:      #2D0A4E;   /* Section panel BGs, modal backdrops  */
-  --color-nebula-violet:    #3B1273;   /* Glass card hover borders            */
-  --color-horizon-magenta:  #C4186C;   /* Secondary CTA hover gradient        */
-  --color-crystal-teal:     #00FFC8;   /* Ring platform light, focus rings    */
-  --color-warning-gold:     #F5E642;   /* COMING SOON badge, countdown timers */
-  --color-sun-amber:        #FF9D6E;   /* Sun glow tint, warm CTA variants    */
-  --color-deep-space-teal:  #1A4A5E;   /* Dark glass card fill alternative    */
+  --font-hero:    'Orbitron', monospace;
+  --font-heading: 'Orbitron', monospace;
+  --font-body:    'Exo 2', sans-serif;
+  --font-code:    'Share Tech Mono', monospace;
 }
 
-
-/* ─────────────────────────────────────────
-   1.2 TYPOGRAPHY
-───────────────────────────────────────── */
-
+/* ── COLOUR PALETTE ── */
 :root {
-  --font-hero:    'Blade Desire', cursive;          /* Logo, Hero H1          */
-  --font-heading: 'Orbitron', sans-serif;           /* H2, H3, UI labels      */
-  --font-body:    'Inter', sans-serif;              /* Paragraphs, nav, forms */
-  --font-code:    'Courier New', monospace;         /* Technical blocks only  */
+  --color-bg:               #04060F;
+  --color-bg2:              #080C1A;
+  --color-neon:             #00E0FF;
+  --color-red:              #FF3B5C;
+  --color-secondary:        #1A2332;
+  --color-text:             #EAF4FF;
+  --color-purple:           #7B61FF;
+
+  --color-void-purple:      #2D0A4E;
+  --color-horizon-magenta:  #C4186C;
+  --color-crystal-teal:     #00FFC8;
+  --color-warning-gold:     #F5E642;
+  --color-sun-amber:        #FF9D6E;
+  --color-deep-space-teal:  #1A4A5E;
+
+  /* Yellow / Energy */
+  --yellow-primary:   #FFD84D;
+  --yellow-soft:      #FFEFA3;
+  --yellow-electric:  #FFC300;
+  --yellow-gold:      #BFA65A;
 }
 
-
-/* ─────────────────────────────────────────
-   1.3 GRADIENTS
-───────────────────────────────────────── */
-
+/* ── GRADIENTS ── */
 :root {
   --gradient-primary:      linear-gradient(135deg, #00E0FF, #7B61FF);
-  --gradient-bg:           linear-gradient(180deg, #0A0F1C 0%, #0D1326 100%);
+  --gradient-bg:           linear-gradient(180deg, #04060F, #080C1A);
   --gradient-glass:        linear-gradient(145deg, #1A2332, #0F1624);
-  --gradient-hover:        linear-gradient(90deg,  #00E0FF, #FF3B5C);
-  --gradient-radial-glow:  radial-gradient(circle at 50% 50%, #00E0FF33, transparent 70%);
-  --gradient-text:         linear-gradient(90deg,  #00E0FF, #7B61FF);
-  --gradient-vignette:     radial-gradient(ellipse at center, #0D1326 0%, #0A0F1C 70%);
+  --gradient-text:         linear-gradient(90deg, #00E0FF, #7B61FF);
+  --gradient-hero-glow:    linear-gradient(135deg, #00E0FF, #FFD84D);
+  --gradient-btn-hover:    linear-gradient(90deg, #4D7CFE, #FFC300);
+  --gradient-energy-ring:  radial-gradient(#FFEFA3, #FFD84D, transparent);
 }
 
-
-/* ─────────────────────────────────────────
-   1.4 STYLING TOKENS
-───────────────────────────────────────── */
-
+/* ── GLOW TOKENS ── */
 :root {
-  /* Shadows & Glow */
-  --glow-sm:         0 0 12px #00E0FF66;
-  --glow-md:         0 0 20px rgba(0, 224, 255, 0.4);
-  --glow-lg:         0 0 25px #00E0FF66;
-  --glow-xl:         0 0 35px #00E0FFAA;
-  --glow-logo:       0 0 40px #00E0FF99;
-  --glow-card-hover: 0 8px 32px rgba(0, 224, 255, 0.15);
-  --glow-progress:   0 0 12px #00E0FF;
+  --glow-sm:          0 0 12px #00E0FF66;
+  --glow-md:          0 0 20px rgba(0,224,255,0.4);
+  --glow-lg:          0 0 25px #00E0FF66;
+  --glow-xl:          0 0 35px #00E0FFAA;
+  --glow-logo:        0 0 40px #00E0FF99;
+  --glow-card-hover:  0 8px 32px rgba(0,224,255,0.15);
 
-  /* Borders */
-  --border-glass:    1px solid rgba(255, 255, 255, 0.1);
-  --border-neon:     1px solid #00E0FF33;
-  --border-neon-mid: 1px solid rgba(0, 224, 255, 0.5);
-  --border-footer:   1px solid rgba(0, 224, 255, 0.2);
-
-  /* Backdrop blur */
-  --blur-glass:      blur(10px);
-  --blur-navbar:     blur(12px);
-  --blur-mobile-nav: blur(16px);
-  --blur-modal:      blur(8px);
-  --blur-spaceship:  blur(2px);
+  --glow-yellow-sm:   0 0 12px rgba(255,216,77,0.4);
+  --glow-yellow-md:   0 0 20px rgba(255,216,77,0.6);
+  --glow-yellow-lg:   0 0 35px rgba(255,216,77,0.6);
 }
 
-
-/* ─────────────────────────────────────────
-   1.5 SPACING SYSTEM — 8px Base
-───────────────────────────────────────── */
-
+/* ── BORDERS & RADIUS ── */
 :root {
-  --space-xs:    4px;    /* Icon padding, tight inline gaps         */
-  --space-sm:    8px;    /* Label gaps, badge padding               */
-  --space-md:    16px;   /* Form field spacing, card inner padding  */
-  --space-lg:    24px;   /* Nav gaps, section column spacing        */
-  --space-xl:    32px;   /* Component separation                    */
-  --space-2xl:   48px;   /* Between major content blocks            */
-  --space-3xl:   64px;   /* Section top/bottom padding              */
-  --space-4xl:   80px;   /* Section top/bottom padding (large)      */
-  --space-hero:  100vh;  /* Hero section height (min 700px)         */
-}
+  --border-glass:      1px solid rgba(255,255,255,0.1);
+  --border-neon:       1px solid rgba(0,224,255,0.2);
+  --border-neon-mid:   1px solid rgba(0,224,255,0.5);
+  --border-footer:     1px solid rgba(0,224,255,0.2);
+  --border-gold:       1px solid rgba(191,166,90,0.4);
 
-
-/* ─────────────────────────────────────────
-   BORDER RADIUS
-───────────────────────────────────────── */
-
-:root {
   --radius-sm:   8px;
   --radius-md:   16px;
   --radius-pill: 999px;
 }
 
-
-/* ─────────────────────────────────────────
-   Z-INDEX SYSTEM
-   (mirrors 3D depth spec from Section 3.1)
-───────────────────────────────────────── */
-
+/* ── Z-INDEX SYSTEM ── */
 :root {
-  --z-bg:      -10;   /* Background environment (deepest)   */
-  --z-sun:      -3;   /* Sun glow overlay                   */
-  --z-ship:     -5;   /* Spaceship (farthest 3D layer)      */
-  --z-char:      0;   /* Character (hero focus)             */
-  --z-planet:    2;   /* Planet (foreground, fastest)       */
-  --z-ui:       10;   /* UI overlays                        */
-  --z-navbar:  100;   /* Sticky navbar                      */
-  --z-modal:  9999;   /* Modal overlay                      */
+  --z-bg:     -10;
+  --z-sun:    -3;
+  --z-ship:   -5;
+  --z-char:   0;
+  --z-planet: 2;
+  --z-ui:     10;
+  --z-navbar: 100;
+  --z-modal:  9999;
 }
 
-
-/* ─────────────────────────────────────────
-   TRANSITIONS & EASING
-   (from Section 7.1 Animation System)
-───────────────────────────────────────── */
-
+/* ── SPACING (8px base grid) ── */
 :root {
-  --ease-fast:    0.2s ease-out;          /* Button / hover          */
-  --ease-base:    0.3s ease-in-out;       /* Navbar glass            */
-  --ease-reveal:  0.6s cubic-bezier(0.16, 1, 0.3, 1);   /* Section reveal  */
-  --ease-modal:   0.5s cubic-bezier(0.16, 1, 0.3, 1);   /* Modal open      */
-  --ease-card:    0.25s ease-out;         /* Card hover              */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-4xl: 80px;
 }
 
+/* ── EASING ── */
+:root {
+  --ease-fast:   0.2s ease-out;
+  --ease-base:   0.3s ease-in-out;
+  --ease-reveal: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-modal:  0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-card:   0.25s ease-out;
+}
 
-/* ─────────────────────────────────────────
-   RESET & BASE
-───────────────────────────────────────── */
+/* ── MODE DEFAULTS (exploration) ── */
+:root {
+  --mode-primary:       #00E0FF;
+  --mode-secondary:     #7B61FF;
+  --mode-glow:          rgba(0,224,255,0.6);
+  --mode-intensity:     0.6;
+  --mode-anim-speed:    1.0;
+  --mode-scan-opacity:  0.04;
+  --glow-intensity:     0.6;
+}
 
-*,
-*::before,
-*::after {
+/* ── RESET & BASE ── */
+*, *::before, *::after {
   box-sizing: border-box;
-  margin:     0;
-  padding:    0;
+  margin: 0;
+  padding: 0;
 }
 
 html {
   scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
+  font-size: 16px;
 }
 
 body {
-  background-color:   var(--color-bg);
-  background-image:   var(--gradient-bg);
-  color:              var(--color-text);
-  font-family:        var(--font-body);
-  font-size:          16px;
-  line-height:        1.6;
-  overflow-x:         hidden;
-  -webkit-font-smoothing:  antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-img,
-video,
-canvas {
-  max-width:  100%;
-  display:    block;
-}
-
-button {
-  cursor:     pointer;
-  border:     none;
-  background: none;
-  font-family: inherit;
-}
-
-input,
-textarea,
-select {
-  font-family: inherit;
-  font-size:   inherit;
-}
-
-ul, ol {
-  list-style: none;
-}
-
-a {
-  color:           var(--color-neon);
-  text-decoration: none;
-  transition:      color var(--ease-fast);
-}
-
-a:hover {
+  background: var(--color-bg);
   color: var(--color-text);
-}
-
-
-/* ─────────────────────────────────────────
-   TYPOGRAPHY — BASE SCALE
-───────────────────────────────────────── */
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  line-height: 1.2;
-  color:       var(--color-text);
-}
-
-/* Fluid type scale using clamp() */
-h1 { font-size: clamp(2.5rem,  6vw, 5rem);    font-weight: 900; }
-h2 { font-size: clamp(1.5rem,  3vw, 2.25rem); font-weight: 700; }
-h3 { font-size: clamp(1.1rem,  2vw, 1.5rem);  font-weight: 700; }
-h4 { font-size: clamp(1rem,    1.5vw, 1.25rem); font-weight: 600; }
-
-p {
   font-family: var(--font-body);
-  font-size:   clamp(1rem, 1.1vw, 1.125rem);
-  color:       rgba(234, 244, 255, 0.8);
-  max-width:   65ch;
   line-height: 1.7;
+  overflow-x: hidden;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Hero headline — Blade Desire override */
-.hero-title {
-  font-family:     var(--font-hero);
-  text-transform:  uppercase;   /* font has lowercase glyphs only */
-  letter-spacing:  0.02em;
-}
-
-/* Section heading — Orbitron */
-.section-heading {
-  font-family:    var(--font-heading);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-/* Code / spec text */
-code, pre {
-  font-family: var(--font-code);
-  font-size:   14px;
-}
-
-
-/* ─────────────────────────────────────────
-   ACCESSIBILITY — SKIP LINK
-───────────────────────────────────────── */
-
-.skip-link {
-  position:    absolute;
-  top:         -100%;
-  left:        var(--space-md);
-  background:  var(--color-neon);
-  color:       var(--color-bg);
-  padding:     var(--space-sm) var(--space-md);
-  border-radius: var(--radius-sm);
-  font-family: var(--font-heading);
-  font-size:   14px;
-  font-weight: 700;
-  z-index:     var(--z-modal);
-  transition:  top 0.2s ease;
-}
-
-.skip-link:focus {
-  top: var(--space-md);
-}
-
-
-/* ─────────────────────────────────────────
-   ACCESSIBILITY — FOCUS RING
-───────────────────────────────────────── */
-
-:focus-visible {
-  outline:        2px solid var(--color-neon);
-  outline-offset: 3px;
-  border-radius:  4px;
-}
-
-/* Remove default only when custom replacement exists */
-:focus:not(:focus-visible) {
-  outline: none;
-}
-
-
-/* ─────────────────────────────────────────
-   LAYOUT — CONTAINER & GRID
-───────────────────────────────────────── */
-
-.container {
-  max-width: 1280px;
-  margin:    0 auto;
-  padding:   0 var(--space-lg);
-  width:     100%;
-}
-
-/* 12-column CSS grid */
-.grid-12 {
-  display:               grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap:                   var(--space-lg);
-}
-
-/* Hero 6/6 split */
-.col-6 { grid-column: span 6; }
-.col-5 { grid-column: span 5; }
-.col-8 { grid-column: span 8; }
-.col-4 { grid-column: span 4; }
-
-
-/* ─────────────────────────────────────────
-   LAYOUT — SECTION BASE
-───────────────────────────────────────── */
-
-.section {
-  padding:   var(--space-4xl) 0;
-  position:  relative;
-  overflow:  hidden;       /* contain 3D overflow per design rules */
-}
-
-.section-inner {
-  position:  relative;
-  z-index:   var(--z-ui);  /* ensure UI sits above 3D decoratives */
-}
-
-/* Section reveal animation (JS adds .visible) */
-.section-enter {
-  opacity:    0;
-  transform:  translateY(40px);
-  transition:
-    opacity   var(--ease-reveal),
-    transform var(--ease-reveal);
-}
-
-.section-enter.visible {
-  opacity:   1;
-  transform: translateY(0);
-}
-
-
-/* ─────────────────────────────────────────
-   UTILITY CLASSES
-───────────────────────────────────────── */
-
-/* Text gradient — hero headline, section titles */
+/* ── UTILITY CLASSES ── */
 .text-gradient {
-  background:              var(--gradient-text);
+  background: var(--gradient-text);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip:         text;
 }
 
-/* Glass panel — cards, navbar, modals */
+.text-gradient-energy {
+  background: linear-gradient(90deg, var(--color-neon), var(--yellow-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .glass {
-  background:            var(--gradient-glass);
-  backdrop-filter:       var(--blur-glass);
-  -webkit-backdrop-filter: var(--blur-glass);
-  border:                var(--border-glass);
+  background: var(--gradient-glass);
+  backdrop-filter: blur(12px);
+  border: var(--border-glass);
 }
 
-/* Neon glow helper */
-.glow       { box-shadow: var(--glow-lg); }
-.glow-sm    { box-shadow: var(--glow-sm); }
-.glow-xl    { box-shadow: var(--glow-xl); }
+.glow     { box-shadow: var(--glow-md); }
+.glow-sm  { box-shadow: var(--glow-sm); }
+.glow-xl  { box-shadow: var(--glow-xl); }
 
-/* Neon border */
-.border-neon     { border: var(--border-neon); }
-.border-neon-mid { border: var(--border-neon-mid); }
+.glow-yellow    { box-shadow: var(--glow-yellow-md); }
+.glow-yellow-sm { box-shadow: var(--glow-yellow-sm); }
+.glow-yellow-lg { box-shadow: var(--glow-yellow-lg); }
 
-/* Pill badge base */
-.badge {
-  display:       inline-flex;
-  align-items:   center;
-  padding:       var(--space-xs) var(--space-md);
-  border-radius: var(--radius-pill);
-  font-family:   var(--font-heading);
-  font-size:     11px;
-  font-weight:   700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+.badge        { display: inline-flex; align-items: center; gap: var(--space-sm); padding: 5px 14px; border-radius: var(--radius-pill); font-family: var(--font-heading); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
+.badge-red    { background: rgba(255,59,92,0.12); border: 1px solid rgba(255,59,92,0.4); color: var(--color-red); }
+.badge-glass  { background: rgba(255,255,255,0.08); border: var(--border-glass); color: var(--color-text); }
+.badge-gold   { background: rgba(245,230,66,0.1); border: 1px solid rgba(245,230,66,0.3); color: var(--color-warning-gold); }
+.badge-yellow { background: rgba(255,216,77,0.1); border: var(--border-gold); color: var(--yellow-primary); }
+
+.section-enter {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity var(--ease-reveal), transform var(--ease-reveal);
 }
+.section-enter.visible { opacity: 1; transform: none; }
+.section-enter.fade-left  { transform: translateX(-40px); }
+.section-enter.fade-right { transform: translateX(40px); }
+.section-enter.scale-in   { transform: scale(0.92) translateY(20px); }
+.section-enter.fade-only  { transform: none; }
+.section-enter.delay-1 { transition-delay: 0.1s; }
+.section-enter.delay-2 { transition-delay: 0.2s; }
+.section-enter.delay-3 { transition-delay: 0.3s; }
+.section-enter.delay-4 { transition-delay: 0.4s; }
+.section-enter.delay-5 { transition-delay: 0.5s; }
+.section-enter.delay-6 { transition-delay: 0.6s; }
 
-.badge-red {
-  background: var(--color-red);
-  color:      var(--color-text);
-}
-
-.badge-glass {
-  background: rgba(255, 255, 255, 0.05);
-  border:     var(--border-glass);
-  color:      var(--color-text);
-}
-
-.badge-gold {
-  background: var(--color-warning-gold);
-  color:      var(--color-bg);
-}
-
-/* Visually hidden (screen reader only) */
 .sr-only {
-  position: absolute;
-  width:    1px;
-  height:   1px;
-  padding:  0;
-  margin:  -1px;
-  overflow: hidden;
-  clip:     rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border:   0;
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
 }
 
-/* Decorative — aria-hidden elements */
-[aria-hidden="true"] {
-  pointer-events: none;
-  user-select:    none;
-}
+.text-neon    { color: var(--color-neon); }
+.text-red     { color: var(--color-red); }
+.text-purple  { color: var(--color-purple); }
+.text-muted   { color: rgba(234,244,255,0.45); }
 
-/* Flex helpers */
-.flex        { display: flex; }
-.flex-center { display: flex; align-items: center; justify-content: center; }
-.flex-col    { display: flex; flex-direction: column; }
-
-/* Text helpers */
-.text-neon   { color: var(--color-neon); }
-.text-red    { color: var(--color-red); }
-.text-purple { color: var(--color-purple); }
-.text-muted  { color: rgba(234, 244, 255, 0.5); }
-.text-center { text-align: center; }
-.uppercase   { text-transform: uppercase; }
-.tracking-wide { letter-spacing: 0.1em; }
-.tracking-widest { letter-spacing: 0.25em; }
-
-
-/* ─────────────────────────────────────────
-   SCROLLBAR — custom dark style
-───────────────────────────────────────── */
-
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-bg);
-}
-
-::-webkit-scrollbar-thumb {
-  background:    var(--color-secondary);
-  border-radius: var(--radius-pill);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-neon);
-}
-
-
-/* ─────────────────────────────────────────
-   SELECTION
-───────────────────────────────────────── */
-
-::selection {
-  background: rgba(0, 224, 255, 0.25);
-  color:      var(--color-text);
-}
-
-
-/* ─────────────────────────────────────────
-   SCAN LINES OVERLAY (Section 5.2)
-   Full-screen pseudo-element — sci-fi CRT feel
-   Apply .scanlines to any full-screen wrapper
-───────────────────────────────────────── */
+.flex-center  { display: flex; align-items: center; justify-content: center; }
+.uppercase    { text-transform: uppercase; }
+.tracking-wide { letter-spacing: 0.15em; }
 
 .scanlines::after {
-  content:    '';
-  position:   fixed;
-  inset:      0;
+  content: '';
+  position: absolute; inset: 0;
   background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent          2px,
-    rgba(0, 0, 0, 0.05)  2px,
-    rgba(0, 0, 0, 0.05)  4px
+    0deg, transparent, transparent 3px,
+    rgba(0,0,0,var(--mode-scan-opacity)) 3px,
+    rgba(0,0,0,var(--mode-scan-opacity)) 4px
   );
   pointer-events: none;
-  z-index:    var(--z-modal);
+  z-index: 1;
 }
 
-
-/* ─────────────────────────────────────────
-   RESPONSIVE — BREAKPOINTS
-   Desktop  > 1024px  — 12 cols, 24px gutter
-   Tablet  768–1024px —  8 cols, 20px gutter
-   Mobile   < 768px   —  4 cols, 16px gutter
-───────────────────────────────────────── */
-
-@media (max-width: 1024px) {
-  .container {
-    padding: 0 20px;
-  }
-
-  .col-6,
-  .col-5 {
-    grid-column: span 8;
-  }
-
-  .col-4 {
-    grid-column: span 4;
-  }
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 0 var(--space-md);
-  }
-
-  .section {
-    padding: var(--space-2xl) 0;
-  }
-
-  /* All grid columns collapse to full width on mobile */
-  .col-6,
-  .col-5,
-  .col-8,
-  .col-4 {
-    grid-column: span 4;   /* full width in 4-col mobile grid */
-  }
-
-  .grid-12 {
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-md);
-  }
-
-  /* Mobile scroll replacement (Section 4.3) */
-  .section-enter {
-    transform:  translateY(20px);
-    opacity:    0;
-    transition:
-      transform 0.6s ease-out,
-      opacity   0.6s ease-out;
-  }
-
-  .section-enter.visible {
-    transform: translateY(0);
-    opacity:   1;
-  }
-
-  p {
-    max-width: 100%;
-  }
-}
-
-
-/* ─────────────────────────────────────────
-   REDUCED MOTION — ACCESSIBILITY
-   Section 7.3 + 9.4
-───────────────────────────────────────── */
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration:        0.01ms !important;
-    animation-iteration-count: 1      !important;
-    transition-duration:       0.01ms !important;
-    scroll-behavior:           auto   !important;
-  }
-
-  /* Instant-reveal for section animations */
-  .section-enter {
-    opacity:   1 !important;
-    transform: none !important;
-  }
-}
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: rgba(0,224,255,0.3); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-neon); }

@@ -1,0 +1,115 @@
+/* ─────────────────────────────────────────────
+   SINGULARITY PROTOCOL — Mode System
+   body.mode-exploration (default) / body.mode-combat
+───────────────────────────────────────────── */
+
+/* ── EXPLORATION (default cyan) ── */
+body.mode-exploration,
+body:not(.mode-combat) {
+  --mode-primary:      #00E0FF;
+  --mode-secondary:    #7B61FF;
+  --mode-glow:         rgba(0,224,255,0.6);
+  --mode-intensity:    0.6;
+  --mode-anim-speed:   1.0;
+  --mode-scan-opacity: 0.04;
+}
+
+/* ── COMBAT (red / orange) ── */
+body.mode-combat {
+  --mode-primary:      #FF3B5C;
+  --mode-secondary:    #FF8C00;
+  --mode-glow:         rgba(255,59,92,0.7);
+  --mode-intensity:    1.0;
+  --mode-anim-speed:   0.75;
+  --mode-scan-opacity: 0.08;
+}
+
+/* ── MODE SWITCH FLASH ── */
+body.mode-switching {
+  animation: modeSwitch 0.5s ease;
+}
+@keyframes modeSwitch {
+  0%   { filter: brightness(1); }
+  15%  { filter: brightness(2.5) hue-rotate(30deg); }
+  30%  { filter: brightness(0.5); }
+  50%  { filter: brightness(1.8) hue-rotate(-20deg); }
+  70%  { filter: brightness(0.8); }
+  100% { filter: brightness(1); }
+}
+
+/* ── COMPONENTS AFFECTED BY MODE ── */
+
+/* Navbar active / hover */
+.nav-links a.active,
+.nav-links a:hover {
+  color: var(--mode-primary) !important;
+}
+.nav-links a.active::after,
+.nav-links a:hover::after {
+  background: var(--mode-primary) !important;
+  box-shadow: 0 0 8px var(--mode-primary) !important;
+}
+
+/* CTA button */
+.btn-primary {
+  background: linear-gradient(135deg, var(--mode-primary), var(--mode-secondary));
+}
+body.mode-combat .btn-primary {
+  box-shadow: 0 0 20px rgba(255,59,92,0.4);
+}
+
+/* Hero stat numbers */
+.stat-num,
+.stat-box .num {
+  color: var(--mode-primary);
+  text-shadow: 0 0 20px var(--mode-primary);
+}
+
+/* HUD brackets */
+.hud-tl, .hud-tr {
+  border-color: var(--mode-primary) !important;
+  opacity: 0.55;
+}
+body.mode-combat .hud-tl,
+body.mode-combat .hud-tr {
+  border-color: #FF3B5C !important;
+  opacity: 0.7;
+}
+
+/* HUD text */
+.hud-panel-tl {
+  color: var(--mode-primary);
+}
+
+/* Scanlines intensity */
+body.mode-combat .hud__scanlines::after {
+  opacity: 0.08;
+}
+
+/* Custom cursor */
+body.mode-combat #cursor-dot {
+  background: var(--color-red);
+  box-shadow: 0 0 10px var(--color-red), 0 0 20px rgba(255,59,92,0.5);
+}
+body.mode-combat #cursor-ring {
+  border-color: rgba(255,59,92,0.5);
+}
+body.mode-combat #cursor-ring.hov {
+  border-color: var(--color-red);
+  background: rgba(255,59,92,0.05);
+}
+
+/* Control panel */
+body.mode-combat .cp__toggle {
+  border-color: rgba(255,59,92,0.3);
+  color: #FF3B5C;
+}
+body.mode-combat .cp__slider-fill {
+  background: linear-gradient(90deg, #FF8C00, #FF3B5C);
+}
+
+/* Card hover borders */
+.feature-card:hover,
+.role-card:hover {
+  border-color: rgba(var(--mode-primary), 0.3);
+}

@@ -1,0 +1,42 @@
+/* ─────────────────────────────────────────────
+   SINGULARITY PROTOCOL — Scroll Reveal
+   Applied by useScrollReveal hook via IntersectionObserver
+───────────────────────────────────────────── */
+
+/* Base state — hidden */
+.section-enter {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity  0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Triggered state */
+.section-enter.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Directional variants */
+.section-enter.fade-left  { transform: translateX(-40px); }
+.section-enter.fade-right { transform: translateX(40px); }
+.section-enter.scale-in   { transform: scale(0.92) translateY(20px); }
+.section-enter.fade-only  { transform: none; }
+
+/* Stagger delays */
+.section-enter.delay-1 { transition-delay: 0.1s; }
+.section-enter.delay-2 { transition-delay: 0.2s; }
+.section-enter.delay-3 { transition-delay: 0.3s; }
+.section-enter.delay-4 { transition-delay: 0.4s; }
+.section-enter.delay-5 { transition-delay: 0.5s; }
+.section-enter.delay-6 { transition-delay: 0.6s; }
+
+/* Accessibility — skip all animations */
+@media (prefers-reduced-motion: reduce) {
+  .section-enter {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

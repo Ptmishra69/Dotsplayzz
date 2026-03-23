@@ -1,0 +1,105 @@
+/* ─────────────────────────────────────────────
+   SINGULARITY PROTOCOL — Custom Cursor
+───────────────────────────────────────────── */
+
+/* Hide native cursor everywhere */
+*, *::before, *::after { cursor: none !important; }
+
+/* ── BASE ELEMENTS ── */
+.cursor__dot,
+.cursor__ring,
+.cursor__pulse {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+}
+
+/* Dot — 8px solid cyan, instant */
+.cursor__dot {
+  width: 8px;
+  height: 8px;
+  background: var(--color-neon);
+  box-shadow: 0 0 10px var(--color-neon), 0 0 20px rgba(0,224,255,0.45);
+  transition: width 0.15s, height 0.15s, background 0.2s, box-shadow 0.2s;
+  z-index: 99999;
+}
+
+/* Ring — 28px outline, lagged via JS lerp */
+.cursor__ring {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(0,224,255,0.55);
+  background: transparent;
+  transition: width 0.22s, height 0.22s, border-color 0.22s, background 0.22s;
+  z-index: 99998;
+}
+
+/* Pulse — click burst */
+.cursor__pulse {
+  width: 0;
+  height: 0;
+  border: 1px solid var(--color-neon);
+  opacity: 0;
+  z-index: 99997;
+}
+.cursor__pulse--active {
+  animation: cursorPulse 0.5s ease-out forwards;
+}
+@keyframes cursorPulse {
+  0%   { width: 0; height: 0; opacity: 0.8; }
+  100% { width: 56px; height: 56px; opacity: 0; }
+}
+
+/* ── HOVER STATE ── */
+.cursor__dot--hover {
+  width: 4px;
+  height: 4px;
+  background: var(--color-neon);
+}
+.cursor__ring--hover {
+  width: 44px;
+  height: 44px;
+  border-color: var(--color-neon);
+  background: rgba(0,224,255,0.05);
+}
+
+/* ── DRAG STATE ── */
+.cursor__dot--drag {
+  background: var(--color-red);
+  box-shadow: 0 0 10px var(--color-red);
+}
+.cursor__ring--drag {
+  border-color: var(--color-red);
+}
+
+/* ── HIDDEN (mouse left window) ── */
+.cursor--hidden {
+  opacity: 0 !important;
+  transition: opacity 0.3s;
+}
+
+/* ── COMBAT MODE ── */
+body.mode-combat .cursor__dot {
+  background: var(--color-red);
+  box-shadow: 0 0 10px var(--color-red), 0 0 20px rgba(255,59,92,0.45);
+}
+body.mode-combat .cursor__ring {
+  border-color: rgba(255,59,92,0.5);
+}
+body.mode-combat .cursor__ring--hover {
+  border-color: var(--color-red);
+  background: rgba(255,59,92,0.05);
+}
+body.mode-combat .cursor__pulse {
+  border-color: var(--color-red);
+}
+
+/* ── TOUCH DEVICES — hide everything ── */
+@media (pointer: coarse) {
+  .cursor__dot,
+  .cursor__ring,
+  .cursor__pulse { display: none !important; }
+  * { cursor: auto !important; }
+}

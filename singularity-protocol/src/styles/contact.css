@@ -1,0 +1,331 @@
+/* ============================================================
+   SINGULARITY PROTOCOL — contact.css
+   Contact section — Section 8.5
+   ============================================================ */
+
+/* ── Section Base ── */
+.contact {
+  position:   relative;
+  padding:    var(--space-4xl) 0;
+  overflow:   hidden;
+}
+
+/* Top border glow */
+.contact::before {
+  content:    '';
+  position:   absolute;
+  top:        0;
+  left:       10%;
+  right:      10%;
+  height:     1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(123, 97, 255, 0.3),
+    rgba(0, 224, 255, 0.3),
+    transparent
+  );
+}
+
+/* Ambient glow */
+.contact::after {
+  content:    '';
+  position:   absolute;
+  top:        40%;
+  left:       50%;
+  transform:  translate(-50%, -50%);
+  width:      500px;
+  height:     500px;
+  background: radial-gradient(
+    circle,
+    rgba(123, 97, 255, 0.05) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index:    0;
+}
+
+/* ── Inner ── */
+.contact__inner {
+  position:        relative;
+  z-index:         1;
+  max-width:       1280px;
+  margin:          0 auto;
+  padding:         0 var(--space-lg);
+  display:         flex;
+  flex-direction:  column;
+  align-items:     center;
+  gap:             var(--space-3xl);
+}
+
+/* ── Header ── */
+.contact__header {
+  text-align:     center;
+  display:        flex;
+  flex-direction: column;
+  align-items:    center;
+  gap:            var(--space-md);
+  max-width:      560px;
+}
+
+.contact__label {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color:          var(--color-purple);
+  opacity:        0.8;
+}
+
+.contact__headline {
+  font-family:             'Orbitron', sans-serif;
+  font-size:               clamp(1.8rem, 4vw, 2.75rem);
+  font-weight:             900;
+  letter-spacing:          0.08em;
+  text-transform:          uppercase;
+  background:              linear-gradient(90deg, #EAF4FF, #7B61FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip:         text;
+  line-height:             1.15;
+}
+
+.contact__subtext {
+  font-family: 'Inter', sans-serif;
+  font-size:   clamp(1rem, 1.2vw, 1.1rem);
+  color:       rgba(234, 244, 255, 0.7);
+  line-height: 1.75;
+  text-align:  center;
+}
+
+/* ── Form Card ── */
+.contact__card {
+  width:          100%;
+  max-width:      600px;
+  background:     rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border:         1px solid rgba(255, 255, 255, 0.08);
+  border-radius:  var(--radius-md);
+  padding:        var(--space-2xl);
+  position:       relative;
+  overflow:       hidden;
+}
+
+/* Corner accents */
+.contact__card::before,
+.contact__card::after {
+  content:  '';
+  position: absolute;
+  width:    32px;
+  height:   32px;
+}
+
+.contact__card::before {
+  top:         0;
+  left:        0;
+  border-top:  1px solid rgba(0, 224, 255, 0.35);
+  border-left: 1px solid rgba(0, 224, 255, 0.35);
+}
+
+.contact__card::after {
+  bottom:       0;
+  right:        0;
+  border-bottom: 1px solid rgba(123, 97, 255, 0.35);
+  border-right:  1px solid rgba(123, 97, 255, 0.35);
+}
+
+/* ── Form ── */
+.contact__form {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-lg);
+}
+
+/* ── Field Group ── */
+.contact__field {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-sm);
+}
+
+.contact__label-text {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      10px;
+  font-weight:    700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color:          rgba(234, 244, 255, 0.6);
+}
+
+.contact__required {
+  color:       var(--color-neon);
+  margin-left: 2px;
+}
+
+/* ── Input & Textarea ── */
+.contact__input,
+.contact__textarea {
+  width:            100%;
+  background:       rgba(255, 255, 255, 0.04);
+  border:           1px solid rgba(255, 255, 255, 0.1);
+  border-radius:    var(--radius-sm);
+  padding:          14px var(--space-md);
+  color:            var(--color-text);
+  font-family:      'Inter', sans-serif;
+  font-size:        15px;
+  outline:          none;
+  transition:       border-color 0.2s ease,
+                    box-shadow   0.2s ease,
+                    background   0.2s ease;
+  -webkit-appearance: none;
+}
+
+.contact__input::placeholder,
+.contact__textarea::placeholder {
+  color: rgba(234, 244, 255, 0.25);
+}
+
+.contact__input:hover,
+.contact__textarea:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.contact__input:focus,
+.contact__textarea:focus {
+  border-color: rgba(0, 224, 255, 0.5);
+  box-shadow:   0 0 0 3px rgba(0, 224, 255, 0.08);
+  background:   rgba(0, 224, 255, 0.03);
+}
+
+/* Error state */
+.contact__input.error,
+.contact__textarea.error {
+  border-color: rgba(255, 59, 92, 0.6);
+  box-shadow:   0 0 0 3px rgba(255, 59, 92, 0.08);
+}
+
+.contact__textarea {
+  min-height:  140px;
+  resize:      vertical;
+  line-height: 1.6;
+}
+
+/* ── Error message ── */
+.contact__error-msg {
+  font-family:  'Inter', sans-serif;
+  font-size:    12px;
+  color:        var(--color-red);
+  letter-spacing: 0.02em;
+  min-height:   16px;
+}
+
+/* ── Two column row (Name + Email) ── */
+.contact__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap:     var(--space-md);
+}
+
+/* ── Submit Button ── */
+.contact__submit {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      13px;
+  font-weight:    700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color:          #0A0F1C;
+  background:     linear-gradient(135deg, #00E0FF, #7B61FF);
+  border:         none;
+  border-radius:  var(--radius-pill);
+  padding:        15px 40px;
+  cursor:         pointer;
+  box-shadow:     0 0 20px rgba(0, 224, 255, 0.35);
+  transition:     transform    0.2s ease,
+                  box-shadow   0.2s ease,
+                  opacity      0.2s ease;
+  width:          100%;
+  min-height:     52px;
+  margin-top:     var(--space-sm);
+  display:        flex;
+  align-items:    center;
+  justify-content: center;
+  gap:            var(--space-sm);
+}
+
+.contact__submit:hover:not(:disabled) {
+  transform:  scale(1.02);
+  box-shadow: 0 0 35px rgba(0, 224, 255, 0.6);
+}
+
+.contact__submit:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.contact__submit:disabled {
+  opacity: 0.5;
+  cursor:  not-allowed;
+}
+
+/* ── Submit states ── */
+.contact__submit--sending {
+  background: linear-gradient(135deg, #1A2332, #0F1624);
+  color:      var(--color-neon);
+  border:     1px solid rgba(0, 224, 255, 0.3);
+  box-shadow: none;
+}
+
+.contact__submit--success {
+  background: linear-gradient(135deg, #00E0FF44, #00FFC822);
+  color:      #00FFC8;
+  border:     1px solid rgba(0, 255, 200, 0.3);
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.2);
+}
+
+/* Spinner */
+.contact__spinner {
+  width:        16px;
+  height:       16px;
+  border:       2px solid rgba(0, 224, 255, 0.3);
+  border-top:   2px solid var(--color-neon);
+  border-radius: 50%;
+  animation:    spin 0.7s linear infinite;
+  flex-shrink:  0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Support text below form ── */
+.contact__support {
+  font-family:  'Inter', sans-serif;
+  font-size:    13px;
+  color:        rgba(234, 244, 255, 0.35);
+  text-align:   center;
+  letter-spacing: 0.02em;
+}
+
+.contact__support a {
+  color:       rgba(0, 224, 255, 0.5);
+  transition:  color 0.2s ease;
+}
+
+.contact__support a:hover {
+  color: var(--color-neon);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .contact {
+    padding: var(--space-2xl) 0;
+  }
+
+  .contact__card {
+    padding: var(--space-xl) var(--space-md);
+  }
+
+  .contact__row {
+    grid-template-columns: 1fr;
+  }
+}

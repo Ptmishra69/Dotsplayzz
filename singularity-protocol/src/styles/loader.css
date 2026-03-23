@@ -1,0 +1,180 @@
+/* ============================================================
+   SINGULARITY PROTOCOL — loader.css
+   Cinematic loading screen — Section 5.2
+   ============================================================ */
+
+/* ── Loader Wrapper ── */
+.loader {
+  position:         fixed;
+  inset:            0;
+  z-index:          99999;
+  display:          flex;
+  flex-direction:   column;
+  align-items:      center;
+  justify-content:  center;
+  background-color: #0A0F1C;
+  background-image: radial-gradient(ellipse at center, #0D1326 0%, #0A0F1C 70%);
+  overflow:         hidden;
+  transition:       opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.loader.exiting {
+  opacity:          0;
+  pointer-events:   none;
+}
+
+/* ── Scan Lines Overlay ── */
+.loader::before {
+  content:    '';
+  position:   absolute;
+  inset:      0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent          2px,
+    rgba(0, 0, 0, 0.05)  2px,
+    rgba(0, 0, 0, 0.05)  4px
+  );
+  pointer-events: none;
+  z-index:    2;
+}
+
+/* ── Particle Canvas ── */
+.loader__particles {
+  position:   absolute;
+  inset:      0;
+  z-index:    1;
+  pointer-events: none;
+}
+
+/* ── Main Content ── */
+.loader__content {
+  position:   relative;
+  z-index:    3;
+  display:    flex;
+  flex-direction: column;
+  align-items: center;
+  gap:        20px;
+}
+
+/* ── Logo ── */
+.loader__logo {
+  font-family:     'Blade Desire', cursive;
+  font-size:       clamp(2.8rem, 7vw, 5.5rem);
+  text-transform:  uppercase;
+  color:           #00E0FF;
+  letter-spacing:  0.04em;
+  text-shadow:     0 0 40px #00E0FF99;
+  opacity:         0;
+  transform:       scale(0.8);
+  animation:       logoEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  line-height:     1;
+}
+
+@keyframes logoEntrance {
+  to {
+    opacity:   1;
+    transform: scale(1.0);
+  }
+}
+
+/* ── Subtitle ── */
+.loader__subtitle {
+  font-family:     'Orbitron', sans-serif;
+  font-size:       12px;
+  letter-spacing:  0.35em;
+  color:           #00E0FF;
+  text-transform:  uppercase;
+  opacity:         0;
+  animation:       fadeIn 0.4s ease-out 1.1s forwards;
+  margin-top:      -12px;
+}
+
+@keyframes fadeIn {
+  to { opacity: 0.7; }
+}
+
+/* ── Divider ── */
+.loader__divider {
+  width:      160px;
+  height:     1px;
+  background: linear-gradient(90deg, transparent, #00E0FF44, transparent);
+  opacity:    0;
+  animation:  fadeIn 0.4s ease-out 1.2s forwards;
+}
+
+/* ── Progress Container ── */
+.loader__progress-wrap {
+  display:        flex;
+  flex-direction: column;
+  align-items:    flex-end;
+  gap:            6px;
+  opacity:        0;
+  animation:      fadeIn 0.4s ease-out 1.3s forwards;
+}
+
+/* ── Percentage Counter ── */
+.loader__percent {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      10px;
+  color:          #00E0FF;
+  letter-spacing: 0.1em;
+  opacity:        0.8;
+}
+
+/* ── Progress Track ── */
+.loader__bar-track {
+  width:         280px;
+  height:        2px;
+  background:    rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  overflow:      hidden;
+  position:      relative;
+}
+
+/* ── Progress Fill ── */
+.loader__bar-fill {
+  height:        100%;
+  background:    linear-gradient(90deg, #7B61FF, #00E0FF);
+  box-shadow:    0 0 12px #00E0FF;
+  border-radius: 999px;
+  width:         0%;
+  transition:    width 0.3s ease-out;
+  position:      relative;
+  overflow:      hidden;
+}
+
+/* ── Scan-line shimmer on fill ── */
+.loader__bar-fill::after {
+  content:    '';
+  position:   absolute;
+  top:        0;
+  left:       -100%;
+  width:      60%;
+  height:     100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation:  shimmer 1.2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%   { left: -60%; }
+  100% { left: 160%; }
+}
+
+/* ── Status Text (typewriter) ── */
+.loader__status {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      11px;
+  letter-spacing: 0.25em;
+  color:          rgba(0, 224, 255, 0.6);
+  text-transform: uppercase;
+  min-height:     16px;
+  text-align:     center;
+  opacity:        0;
+  animation:      fadeIn 0.4s ease-out 1.4s forwards;
+}

@@ -1,0 +1,669 @@
+/* ============================================================
+   SINGULARITY PROTOCOL — careers.css
+   Careers section — Section 8.6
+   ============================================================ */
+
+/* ── Section Base ── */
+.careers {
+  position:   relative;
+  padding:    var(--space-4xl) 0;
+  overflow:   hidden;
+}
+
+/* Top border glow */
+.careers::before {
+  content:    '';
+  position:   absolute;
+  top:        0;
+  left:       10%;
+  right:      10%;
+  height:     1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 224, 255, 0.3),
+    transparent
+  );
+}
+
+/* Ambient glow */
+.careers::after {
+  content:    '';
+  position:   absolute;
+  top:        30%;
+  right:      -100px;
+  width:      500px;
+  height:     500px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 224, 255, 0.04) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index:    0;
+}
+
+/* ── Inner ── */
+.careers__inner {
+  position:        relative;
+  z-index:         1;
+  max-width:       1280px;
+  margin:          0 auto;
+  padding:         0 var(--space-lg);
+  display:         flex;
+  flex-direction:  column;
+  align-items:     center;
+  gap:             var(--space-3xl);
+}
+
+/* ── Header ── */
+.careers__header {
+  text-align:     center;
+  display:        flex;
+  flex-direction: column;
+  align-items:    center;
+  gap:            var(--space-md);
+  max-width:      680px;
+}
+
+.careers__label {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color:          var(--color-neon);
+  opacity:        0.7;
+}
+
+.careers__headline {
+  font-family:             'Orbitron', sans-serif;
+  font-size:               clamp(1.8rem, 4vw, 2.75rem);
+  font-weight:             900;
+  letter-spacing:          0.08em;
+  text-transform:          uppercase;
+  background:              linear-gradient(90deg, #00E0FF, #7B61FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip:         text;
+  line-height:             1.15;
+}
+
+.careers__subtext {
+  font-family: 'Inter', sans-serif;
+  font-size:   clamp(1rem, 1.2vw, 1.1rem);
+  color:       rgba(234, 244, 255, 0.7);
+  line-height: 1.75;
+  text-align:  center;
+}
+
+.careers__scroll-cta {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      12px;
+  font-weight:    700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color:          var(--color-neon);
+  background:     transparent;
+  border:         1px solid rgba(0, 224, 255, 0.3);
+  border-radius:  var(--radius-pill);
+  padding:        11px 28px;
+  cursor:         pointer;
+  transition:     border-color 0.2s ease,
+                  box-shadow   0.2s ease,
+                  transform    0.2s ease;
+  display:        inline-flex;
+  align-items:    center;
+  gap:            var(--space-sm);
+  min-height:     44px;
+}
+
+.careers__scroll-cta:hover {
+  border-color: var(--color-neon);
+  box-shadow:   0 0 20px rgba(0, 224, 255, 0.2);
+  transform:    scale(1.03);
+}
+
+/* ── Culture Block ── */
+.careers__culture {
+  width:   100%;
+  display: flex;
+  flex-direction: column;
+  gap:     var(--space-xl);
+}
+
+.careers__culture-title {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color:          rgba(234, 244, 255, 0.4);
+  text-align:     center;
+}
+
+.careers__culture-grid {
+  display:               grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:                   var(--space-md);
+}
+
+.careers__culture-card {
+  background:     rgba(255, 255, 255, 0.03);
+  border:         1px solid rgba(255, 255, 255, 0.06);
+  border-radius:  var(--radius-md);
+  padding:        var(--space-xl) var(--space-md);
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-md);
+  text-align:     center;
+  transition:     border-color 0.25s ease,
+                  transform    0.25s ease;
+
+  opacity:   0;
+  transform: translateY(20px);
+}
+
+.careers__culture-card.visible {
+  opacity:   1;
+  transform: translateY(0);
+  transition: opacity      0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform    0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease;
+}
+
+.careers__culture-card:hover {
+  border-color: rgba(0, 224, 255, 0.2);
+  transform:    translateY(-4px);
+}
+
+.careers__culture-icon {
+  font-size:  1.8rem;
+  line-height: 1;
+}
+
+.careers__culture-name {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      12px;
+  font-weight:    700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color:          var(--color-text);
+}
+
+.careers__culture-desc {
+  font-family: 'Inter', sans-serif;
+  font-size:   13px;
+  color:       rgba(234, 244, 255, 0.5);
+  line-height: 1.6;
+}
+
+/* ── Role Cards Section ── */
+.careers__roles {
+  width:          100%;
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-xl);
+}
+
+.careers__roles-title {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color:          rgba(234, 244, 255, 0.4);
+  text-align:     center;
+}
+
+.careers__roles-grid {
+  display:               grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:                   var(--space-lg);
+}
+
+/* ── Role Card ── */
+.careers__role-card {
+  background:     rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border:         1px solid rgba(255, 255, 255, 0.08);
+  border-radius:  var(--radius-md);
+  padding:        var(--space-xl);
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-md);
+  cursor:         pointer;
+  transition:     transform    0.25s ease,
+                  border-color 0.25s ease,
+                  box-shadow   0.25s ease;
+
+  opacity:   0;
+  transform: translateY(24px);
+}
+
+.careers__role-card.visible {
+  opacity:   1;
+  transform: translateY(0);
+  transition: opacity      0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform    0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              box-shadow   0.25s ease;
+}
+
+.careers__role-card:hover {
+  transform:    translateY(-6px);
+  border-color: rgba(0, 224, 255, 0.35);
+  box-shadow:   0 8px 32px rgba(0, 224, 255, 0.1);
+}
+
+/* ── Card Top Row ── */
+.careers__role-top {
+  display:         flex;
+  align-items:     flex-start;
+  justify-content: space-between;
+  gap:             var(--space-md);
+  flex-wrap:       wrap;
+}
+
+.careers__role-title {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      15px;
+  font-weight:    700;
+  letter-spacing: 0.04em;
+  color:          var(--color-text);
+  line-height:    1.3;
+}
+
+/* ── Tags Row ── */
+.careers__role-tags {
+  display:   flex;
+  gap:       var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.careers__tag {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      9px;
+  font-weight:    700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding:        4px 10px;
+  border-radius:  var(--radius-pill);
+  white-space:    nowrap;
+}
+
+/* Department tag colors */
+.careers__tag--engineering { background: rgba(0,  224, 255, 0.12); color: #00E0FF; border: 1px solid rgba(0,  224, 255, 0.2); }
+.careers__tag--art         { background: rgba(123, 97, 255, 0.12); color: #7B61FF; border: 1px solid rgba(123, 97, 255, 0.2); }
+.careers__tag--design      { background: rgba(196, 24, 108, 0.12); color: #C4186C; border: 1px solid rgba(196, 24, 108, 0.2); }
+.careers__tag--marketing   { background: rgba(245,230, 66, 0.12);  color: #F5E642; border: 1px solid rgba(245,230, 66, 0.2);  }
+
+/* Type tag */
+.careers__tag--type {
+  background: rgba(255, 255, 255, 0.05);
+  color:      rgba(234, 244, 255, 0.5);
+  border:     1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ── Role Description ── */
+.careers__role-desc {
+  font-family: 'Inter', sans-serif;
+  font-size:   14px;
+  color:       rgba(234, 244, 255, 0.6);
+  line-height: 1.65;
+  max-width:   100%;
+}
+
+/* ── Apply button on card ── */
+.careers__apply-btn {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      11px;
+  font-weight:    700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color:          var(--color-neon);
+  background:     transparent;
+  border:         1px solid rgba(0, 224, 255, 0.25);
+  border-radius:  var(--radius-pill);
+  padding:        10px 24px;
+  cursor:         pointer;
+  transition:     background    0.2s ease,
+                  border-color  0.2s ease,
+                  color         0.2s ease,
+                  box-shadow    0.2s ease;
+  align-self:     flex-start;
+  min-height:     40px;
+  margin-top:     auto;
+}
+
+.careers__role-card:hover .careers__apply-btn {
+  background:   rgba(0, 224, 255, 0.08);
+  border-color: rgba(0, 224, 255, 0.5);
+  box-shadow:   0 0 16px rgba(0, 224, 255, 0.15);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .careers__culture-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .careers {
+    padding: var(--space-2xl) 0;
+  }
+
+  .careers__roles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .careers__culture-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .careers__apply-btn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .careers__culture-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ============================================================
+   APPLICATION MODAL
+   ============================================================ */
+
+.careers-modal__overlay {
+  position:        fixed;
+  inset:           0;
+  background:      rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index:         var(--z-modal);
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  padding:         var(--space-lg);
+  opacity:         0;
+  animation:       modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalFadeIn {
+  to { opacity: 1; }
+}
+
+.careers-modal__box {
+  background:     #0D1326;
+  border:         1px solid rgba(255, 255, 255, 0.1);
+  border-radius:  var(--radius-md);
+  width:          100%;
+  max-width:      620px;
+  max-height:     90vh;
+  overflow-y:     auto;
+  position:       relative;
+  transform:      scale(0.95);
+  animation:      modalScaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-secondary) transparent;
+}
+
+@keyframes modalScaleIn {
+  to { transform: scale(1); }
+}
+
+/* ── Modal Header ── */
+.careers-modal__header {
+  padding:         var(--space-xl) var(--space-2xl) var(--space-lg);
+  border-bottom:   1px solid rgba(255, 255, 255, 0.07);
+  position:        sticky;
+  top:             0;
+  background:      #0D1326;
+  z-index:         1;
+  display:         flex;
+  align-items:     flex-start;
+  justify-content: space-between;
+  gap:             var(--space-md);
+}
+
+.careers-modal__title-group {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-sm);
+}
+
+.careers-modal__role-title {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      18px;
+  font-weight:    700;
+  letter-spacing: 0.04em;
+  color:          var(--color-text);
+  line-height:    1.3;
+}
+
+.careers-modal__tags {
+  display:   flex;
+  gap:       var(--space-sm);
+  flex-wrap: wrap;
+}
+
+/* Close button */
+.careers-modal__close {
+  width:           36px;
+  height:          36px;
+  border-radius:   50%;
+  background:      rgba(255, 255, 255, 0.05);
+  border:          1px solid rgba(255, 255, 255, 0.1);
+  color:           rgba(234, 244, 255, 0.6);
+  font-size:       18px;
+  cursor:          pointer;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  flex-shrink:     0;
+  transition:      background 0.2s ease,
+                   color      0.2s ease,
+                   border-color 0.2s ease;
+  line-height:     1;
+}
+
+.careers-modal__close:hover {
+  background:   rgba(255, 59, 92, 0.1);
+  border-color: rgba(255, 59, 92, 0.4);
+  color:        var(--color-red);
+}
+
+/* ── Modal Body ── */
+.careers-modal__body {
+  padding: var(--space-xl) var(--space-2xl) var(--space-2xl);
+  display: flex;
+  flex-direction: column;
+  gap:     var(--space-xl);
+}
+
+.careers-modal__section-title {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color:          var(--color-neon);
+  opacity:        0.7;
+  margin-bottom:  var(--space-sm);
+}
+
+.careers-modal__list {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-sm);
+  list-style:     none;
+}
+
+.careers-modal__list li {
+  font-family:  'Inter', sans-serif;
+  font-size:    14px;
+  color:        rgba(234, 244, 255, 0.7);
+  line-height:  1.6;
+  padding-left: var(--space-lg);
+  position:     relative;
+}
+
+.careers-modal__list li::before {
+  content:    '→';
+  position:   absolute;
+  left:       0;
+  color:      var(--color-neon);
+  font-size:  12px;
+  opacity:    0.7;
+}
+
+/* ── Application Form inside Modal ── */
+.careers-modal__form {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-md);
+  border-top:     1px solid rgba(255, 255, 255, 0.07);
+  padding-top:    var(--space-xl);
+}
+
+.careers-modal__form-title {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      13px;
+  font-weight:    700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color:          var(--color-text);
+}
+
+.careers-modal__field {
+  display:        flex;
+  flex-direction: column;
+  gap:            6px;
+}
+
+.careers-modal__field-label {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      10px;
+  font-weight:    700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color:          rgba(234, 244, 255, 0.5);
+}
+
+.careers-modal__input,
+.careers-modal__textarea {
+  width:         100%;
+  background:    rgba(255, 255, 255, 0.04);
+  border:        1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  padding:       12px var(--space-md);
+  color:         var(--color-text);
+  font-family:   'Inter', sans-serif;
+  font-size:     14px;
+  outline:       none;
+  transition:    border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.careers-modal__input::placeholder,
+.careers-modal__textarea::placeholder {
+  color: rgba(234, 244, 255, 0.2);
+}
+
+.careers-modal__input:focus,
+.careers-modal__textarea:focus {
+  border-color: rgba(0, 224, 255, 0.45);
+  box-shadow:   0 0 0 3px rgba(0, 224, 255, 0.07);
+}
+
+.careers-modal__textarea {
+  min-height:  100px;
+  resize:      vertical;
+  line-height: 1.6;
+}
+
+.careers-modal__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap:     var(--space-md);
+}
+
+.careers-modal__submit {
+  font-family:    'Orbitron', sans-serif;
+  font-size:      13px;
+  font-weight:    700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color:          #0A0F1C;
+  background:     linear-gradient(135deg, #00E0FF, #7B61FF);
+  border:         none;
+  border-radius:  var(--radius-pill);
+  padding:        14px 36px;
+  cursor:         pointer;
+  box-shadow:     0 0 20px rgba(0, 224, 255, 0.35);
+  transition:     transform 0.2s ease, box-shadow 0.2s ease;
+  width:          100%;
+  min-height:     50px;
+  margin-top:     var(--space-sm);
+  display:        flex;
+  align-items:    center;
+  justify-content: center;
+  gap:            var(--space-sm);
+}
+
+.careers-modal__submit:hover:not(:disabled) {
+  transform:  scale(1.02);
+  box-shadow: 0 0 35px rgba(0, 224, 255, 0.6);
+}
+
+.careers-modal__submit:disabled {
+  opacity: 0.5;
+  cursor:  not-allowed;
+}
+
+.careers-modal__submit--success {
+  background: linear-gradient(135deg, #00E0FF44, #00FFC822);
+  color:      #00FFC8;
+  border:     1px solid rgba(0, 255, 200, 0.3);
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.2);
+}
+
+/* Spinner */
+.careers-modal__spinner {
+  width:        14px;
+  height:       14px;
+  border:       2px solid rgba(0, 0, 0, 0.3);
+  border-top:   2px solid #0A0F1C;
+  border-radius: 50%;
+  animation:    spin 0.7s linear infinite;
+  flex-shrink:  0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Responsive Modal ── */
+@media (max-width: 768px) {
+  .careers-modal__overlay {
+    align-items: flex-end;
+    padding:     0;
+  }
+
+  .careers-modal__box {
+    max-height:    85vh;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+
+  .careers-modal__header,
+  .careers-modal__body {
+    padding-left:  var(--space-lg);
+    padding-right: var(--space-lg);
+  }
+
+  .careers-modal__row {
+    grid-template-columns: 1fr;
+  }
+}
