@@ -108,6 +108,37 @@
   --ease-card:   0.25s ease-out;
 }
 
+/* ══════════════════ GLOBAL MODES ══════════════════ */
+/* When .mode-combat is active on body, override the primary tech palette */
+body.mode-combat {
+  --color-bg:               #0A0404;
+  --color-bg2:              #1A0808;
+  --color-neon:             #FF3366; /* bright crimson neon */
+  --color-neon-alpha:       rgba(255, 51, 102, 0.4);
+  --color-purple:           #FF8C00; /* deep orange */
+  --color-crystal-teal:     #FF5E3A;
+  --color-deep-space-teal:  #5E1A1A;
+
+  --singularity-bg-1:       rgba(255, 51, 102, 0.35);
+  --singularity-bg-2:       rgba(255, 140, 0, 0.20);
+  --singularity-base:       linear-gradient(180deg, #0A0404 0%, #120606 30%, #1A0808 70%, #0A0404 100%);
+  --singularity-overlay:    radial-gradient(ellipse 60% 70% at 50% 40%, rgba(20, 5, 5, 0.3) 0%, rgba(20, 5, 5, 0.8) 100%);
+
+  /* Overwrite gradients */
+  --gradient-primary:      linear-gradient(135deg, #FF3366, #FF8C00);
+  --gradient-bg:           linear-gradient(180deg, #0A0404, #1A0808);
+  --gradient-text:         linear-gradient(90deg, #FF3366, #FF8C00);
+  --gradient-hero-glow:    linear-gradient(135deg, #FF3366, #FFD84D);
+
+  /* Overwrite glows */
+  --glow-sm:          0 0 12px rgba(255, 51, 102, 0.4);
+  --glow-md:          0 0 20px rgba(255, 51, 102, 0.4);
+  --glow-lg:          0 0 25px rgba(255, 51, 102, 0.4);
+  --glow-xl:          0 0 35px rgba(255, 51, 102, 0.6);
+  --glow-logo:        0 0 40px rgba(255, 51, 102, 0.6);
+  --glow-card-hover:  0 8px 32px rgba(255, 51, 102, 0.15);
+}
+
 /* ── MODE DEFAULTS (exploration) ── */
 :root {
   --mode-primary:       #00E0FF;
@@ -117,6 +148,12 @@
   --mode-anim-speed:    1.0;
   --mode-scan-opacity:  0.04;
   --glow-intensity:     0.6;
+  --color-neon-alpha:   rgba(0, 224, 255, 0.4);
+
+  --singularity-bg-1:       rgba(0, 140, 255, 0.25);
+  --singularity-bg-2:       rgba(0, 224, 255, 0.15);
+  --singularity-base:       linear-gradient(180deg, #04060F 0%, #060914 30%, #080C1A 70%, #04060F 100%);
+  --singularity-overlay:    radial-gradient(ellipse 60% 70% at 50% 40%, rgba(4, 6, 15, 0.3) 0%, rgba(4, 6, 15, 0.8) 100%);
 }
 
 /* ── RESET & BASE ── */

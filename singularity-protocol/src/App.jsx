@@ -11,6 +11,7 @@ import Social              from './sections/Social'
 import Contact             from './sections/Contact'
 import Careers             from './sections/Careers'
 import FixedFloatingLines  from './components/FixedFloatingLines'
+import SectionDivider      from './components/SectionDivider'
 import SoundSystem         from './hooks/useSound'
 
 export default function App() {
@@ -58,7 +59,7 @@ export default function App() {
       {/* Control panel — bottom right, persistent */}
       <ControlPanel />
 
-      <a href="#main-content" className="skip-link">Skip to main content</a>
+      <a href="#main-content" className="skip-link sr-only">Skip to main content</a>
 
       {!loaded && <Loader onComplete={() => setLoaded(true)} />}
 
@@ -66,6 +67,7 @@ export default function App() {
 
       <main id="main-content">
         <Hero />
+        <SectionDivider />
         <SingularityProtocol />
         <AboutUs />
         <Social />

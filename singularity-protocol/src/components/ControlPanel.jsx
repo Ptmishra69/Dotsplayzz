@@ -16,12 +16,13 @@
 import { useState, useCallback } from 'react'
 import { SoundSystem } from '../hooks/useSound'
 import { useModeSystem } from '../hooks/useModeSystem'
+import { useGlowSystem } from '../hooks/useGlowSystem'
 import './control-panel.css'
 
 export default function ControlPanel() {
   const [open,      setOpen]      = useState(false)
   const [sound,     setSound]     = useState(false)
-  const [glow,      setGlow]      = useState(60)
+  const { glow, setGlow }         = useGlowSystem()
   const { mode, toggle: toggleMode } = useModeSystem()
 
   /* ── Sound toggle ── */
@@ -44,8 +45,6 @@ export default function ControlPanel() {
   const handleGlow = useCallback(e => {
     const val = Number(e.target.value)
     setGlow(val)
-    /* Write to CSS variable on :root */
-    document.documentElement.style.setProperty('--glow-intensity', val / 100)
     SoundSystem.hover()
   }, [])
 

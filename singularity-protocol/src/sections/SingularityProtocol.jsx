@@ -1,12 +1,43 @@
 import { useEffect, useRef, useState } from 'react'
 import Modal from '../components/Modal'
+import FloatingLines from '../components/FloatingLines'
 import '../styles/singularity.css'
 
 const FEATURE_CARDS = [
-  { icon: '⚡', title: 'Adaptive AI',       desc: 'Enemies evolve with your strategy. No two encounters play the same.' },
-  { icon: '🌌', title: 'Space Exploration', desc: 'Seamless travel across procedurally shaped worlds.'                  },
-  { icon: '🧠', title: 'Your Decisions',    desc: 'Every choice reshapes the universe. The story is yours.'             },
-  { icon: '🚀', title: 'Real-Time Combat',  desc: 'Fast, skill-based mechanics. No cooldowns.'                          },
+  {
+    icon: '⚡',
+    title: 'Adaptive AI',
+    desc: 'Enemies evolve with your strategy. No two encounters play the same.',
+    gradient: 'linear-gradient(135deg, rgba(255,216,77,0.15), rgba(255,157,110,0.08))',
+    borderColor: 'rgba(255,216,77,0.3)',
+  },
+  {
+    icon: '🌌',
+    title: 'Space Exploration',
+    desc: 'Seamless travel across procedurally shaped worlds.',
+    gradient: 'linear-gradient(135deg, rgba(0,224,255,0.12), rgba(123,97,255,0.08))',
+    borderColor: 'rgba(0,224,255,0.3)',
+  },
+  {
+    icon: '🧠',
+    title: 'Your Decisions',
+    desc: 'Every choice reshapes the universe. The story is yours.',
+    gradient: 'linear-gradient(135deg, rgba(123,97,255,0.15), rgba(255,216,77,0.08))',
+    borderColor: 'rgba(123,97,255,0.3)',
+  },
+  {
+    icon: '🚀',
+    title: 'Real-Time Combat',
+    desc: 'Fast, skill-based mechanics. No cooldowns.',
+    gradient: 'linear-gradient(135deg, rgba(255,157,110,0.15), rgba(0,224,255,0.08))',
+    borderColor: 'rgba(255,157,110,0.3)',
+  },
+]
+
+const SCREENSHOTS = [
+  { id: 1, label: 'Open World Exploration', aspect: '16/9' },
+  { id: 2, label: 'Combat System',          aspect: '16/9' },
+  { id: 3, label: 'Story Moments',          aspect: '16/9' },
 ]
 
 const STATS = [
@@ -72,7 +103,6 @@ export default function SingularityProtocol({ onExploreGameplay }) {
     })
   }, [])
 
-  /* onExploreGameplay prop OR internal state — both work */
   function openGameplay() {
     if (onExploreGameplay) onExploreGameplay()
     else setGameplayOpen(true)
@@ -82,6 +112,31 @@ export default function SingularityProtocol({ onExploreGameplay }) {
     <>
       <section id="game" className="singularity" aria-label="Singularity Protocol — game overview">
 
+        {/* FloatingLines Background */}
+        <div className="singularity__lines-bg" aria-hidden="true">
+          <FloatingLines
+            linesGradient={['#FFD84D', '#FF9D6E', '#7B61FF', '#00E0FF']}
+            enabledWaves={['top', 'middle', 'bottom']}
+            lineCount={[4, 5, 3]}
+            lineDistance={[6, 5, 7]}
+            topWavePosition={{ x: 10.0, y: 0.5, rotate: -0.4 }}
+            middleWavePosition={{ x: 5.0, y: 0.0, rotate: 0.2 }}
+            bottomWavePosition={{ x: 2.0, y: -0.7, rotate: -1.0 }}
+            animationSpeed={0.8}
+            interactive={true}
+            bendRadius={5.0}
+            bendStrength={-0.5}
+            mouseDamping={0.05}
+            parallax={true}
+            parallaxStrength={0.15}
+            mixBlendMode="screen"
+          />
+        </div>
+
+        {/* Overlay gradient to ensure readability */}
+        <div className="singularity__overlay" aria-hidden="true" />
+
+        {/* ── Header ── */}
         <div className="singularity__header">
           <span className="singularity__label" aria-hidden="true">⚡ The Game</span>
           <h2 className="singularity__headline">Singularity Protocol</h2>
@@ -100,6 +155,32 @@ export default function SingularityProtocol({ onExploreGameplay }) {
           </div>
         </div>
 
+        {/* ── Game Screenshots Gallery ── */}
+        <div className="singularity__gallery" aria-label="Game screenshots">
+          {SCREENSHOTS.map((shot) => (
+            <div key={shot.id} className="singularity__screenshot" style={{ aspectRatio: shot.aspect }}>
+              <div className="singularity__screenshot-inner">
+                <div className="singularity__screenshot-glow" />
+                <div className="singularity__screenshot-content">
+                  <svg className="singularity__screenshot-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <circle cx="8.5" cy="8.5" r="1.5" />
+                    <path d="M21 15l-5-5L5 21" />
+                  </svg>
+                  <span className="singularity__screenshot-label">{shot.label}</span>
+                  <span className="singularity__screenshot-sub">Screenshot Coming Soon</span>
+                </div>
+                {/* Corner accents */}
+                <span className="singularity__screenshot-corner singularity__screenshot-corner--tl" />
+                <span className="singularity__screenshot-corner singularity__screenshot-corner--tr" />
+                <span className="singularity__screenshot-corner singularity__screenshot-corner--bl" />
+                <span className="singularity__screenshot-corner singularity__screenshot-corner--br" />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* ── Stats ── */}
         <div className="singularity__stats" ref={statsRef} role="list" aria-label="Game statistics">
           {STATS.map(stat => (
             <div key={stat.label} role="listitem">
@@ -110,6 +191,7 @@ export default function SingularityProtocol({ onExploreGameplay }) {
 
         <div className="singularity__energy-line" aria-hidden="true" />
 
+        {/* ── Feature Cards ── */}
         <div className="singularity__cards" role="list" aria-label="Game features">
           {FEATURE_CARDS.map((card, i) => (
             <article
@@ -118,17 +200,24 @@ export default function SingularityProtocol({ onExploreGameplay }) {
               ref={el => cardRefs.current[i] = el}
               role="listitem"
               aria-label={card.title}
+              style={{
+                '--card-gradient': card.gradient,
+                '--card-border': card.borderColor,
+              }}
             >
-              <div className="singularity__card-icon" aria-hidden="true">{card.icon}</div>
+              <div className="singularity__card-icon-wrap" aria-hidden="true">
+                <span className="singularity__card-icon">{card.icon}</span>
+              </div>
               <h3 className="singularity__card-title">{card.title}</h3>
               <p className="singularity__card-desc">{card.desc}</p>
+              <div className="singularity__card-shine" />
             </article>
           ))}
         </div>
 
       </section>
 
-      {/* ── Gameplay Modal — shared Modal component ── */}
+      {/* ── Gameplay Modal ── */}
       <Modal
         isOpen={gameplayOpen || false}
         onClose={() => setGameplayOpen(false)}
@@ -141,7 +230,6 @@ export default function SingularityProtocol({ onExploreGameplay }) {
         ]}
         size="lg"
       >
-        {/* 16:9 video placeholder — replace src with real trailer URL */}
         <div className="modal__media" aria-label="Gameplay trailer">
           <div className="modal__media-placeholder">
             <span className="modal__media-placeholder-icon" aria-hidden="true">▶</span>

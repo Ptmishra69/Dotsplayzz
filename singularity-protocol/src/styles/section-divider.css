@@ -1,0 +1,128 @@
+/* ═══════════════════════════════════════════════
+   SECTION DIVIDER — Premium transition zone
+   Bridges Hero (cyan/purple) → Game (gold/amber)
+═══════════════════════════════════════════════ */
+
+.section-divider {
+  position: relative;
+  height: 120px;
+  overflow: hidden;
+  z-index: 6;
+}
+
+/* ── Angled gradient transition ── */
+.section-divider__angle {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    #04060F 0%,
+    #06080E 20%,
+    #0A0A08 50%,
+    #0F0A05 80%,
+    #0D0904 100%
+  );
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 85%);
+}
+
+/* ── Glowing energy line ── */
+.section-divider__energy {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+.section-divider__energy-core {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #00E0FF 15%,
+    #7B61FF 35%,
+    #FFD84D 65%,
+    #FF9D6E 85%,
+    transparent 100%
+  );
+  opacity: 0.7;
+}
+
+.section-divider__energy-pulse {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 224, 255, 0.3) 15%,
+    rgba(123, 97, 255, 0.2) 35%,
+    rgba(255, 216, 77, 0.3) 65%,
+    rgba(255, 157, 110, 0.2) 85%,
+    transparent 100%
+  );
+  filter: blur(4px);
+  animation: energyPulse 3s ease-in-out infinite;
+}
+
+@keyframes energyPulse {
+  0%, 100% { opacity: 0.5; filter: blur(4px); }
+  50%      { opacity: 1;   filter: blur(8px); }
+}
+
+/* ── Circuit decorations ── */
+.section-divider__circuit {
+  position: absolute;
+  width: 200px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.section-divider__circuit--left {
+  left: 5%;
+}
+
+.section-divider__circuit--right {
+  right: 5%;
+}
+
+/* ── Hex dot pattern ── */
+.section-divider__dots {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.section-divider__dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #FFD84D;
+  box-shadow: 0 0 6px rgba(255, 216, 77, 0.6);
+  animation: dotFloat 2s ease-in-out infinite;
+}
+
+.section-divider__dot:nth-child(even) {
+  background: #00E0FF;
+  box-shadow: 0 0 6px rgba(0, 224, 255, 0.6);
+}
+
+@keyframes dotFloat {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50%      { transform: translateY(-3px); opacity: 1; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .section-divider { height: 80px; }
+  .section-divider__circuit { display: none; }
+}

@@ -11,6 +11,11 @@
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
+  --theme-primary: #00E0FF;
+  --theme-secondary: #7B61FF;
+  --theme-neon: rgba(0, 224, 255, 0.5);
+  --theme-bg-tint: rgba(0, 224, 255, 0.018);
+
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
@@ -48,6 +53,21 @@
   #social .button-icon {
     filter: invert(1) brightness(2);
   }
+}
+
+/* ══════════════════ GLOBAL MODES ══════════════════ */
+body.mode-exploration {
+  --theme-primary: #00E0FF;
+  --theme-secondary: #7B61FF;
+  --theme-neon: rgba(0, 224, 255, 0.5);
+  --theme-bg-tint: rgba(0, 224, 255, 0.018);
+}
+
+body.mode-combat {
+  --theme-primary: #FF3366;
+  --theme-secondary: #FF8c00;
+  --theme-neon: rgba(255, 51, 102, 0.5);
+  --theme-bg-tint: rgba(255, 51, 102, 0.035);
 }
 
 body {

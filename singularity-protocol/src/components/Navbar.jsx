@@ -15,13 +15,20 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const [scrolled,   setScrolled]   = useState(false);
+  const [revealed,   setRevealed]   = useState(false);
   const [menuOpen,   setMenuOpen]   = useState(false);
   const [activeLink, setActiveLink] = useState('#home');
 
-  // ── Scroll glass effect ──
+  // ── Scroll glass + reveal effect ──
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 20);
+      // Reveal navbar once user has scrolled past 10%
+      setRevealed(window.scrollY > window.innerHeight * 0.10);
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
+    // Run once on mount in case user lands mid-page
+    onScroll();
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
@@ -67,7 +74,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`} role="navigation" aria-label="Main navigation">
+      <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''} ${revealed ? 'navbar--revealed' : ''}`} role="navigation" aria-label="Main navigation">
         {/* Logo */}
         <a
           href="#home"

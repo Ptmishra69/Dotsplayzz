@@ -1,32 +1,46 @@
 import { useEffect, useRef, useState } from 'react'
 import '../styles/about.css'
 
-const DISCIPLINES = [
+const TEAM = [
   {
-    icon:  '🎮',
-    title: 'Game Development',
-    desc:  'Crafting immersive mechanics and worlds that pull you in and never let go.',
+    name: 'Sourav Kumar',
+    role: 'Founder',
+    photo: 'https://ui-avatars.com/api/?name=Sourav+Kumar&background=0D0914&color=00E0FF&size=128',
+    desc: 'Visionary architect behind the Singularity Protocol.',
+    instagram: 'https://instagram.com/'
   },
   {
-    icon:  '🤖',
-    title: 'AI Systems',
-    desc:  'Building adaptive intelligence that evolves, reacts, and surprises.',
+    name: 'Abhisht Jaiswal',
+    role: 'Core Member',
+    photo: 'https://ui-avatars.com/api/?name=Abhisht+Jaiswal&background=0D0914&color=7B61FF&size=128',
+    desc: 'Crafts the dynamic visual landscapes and game systems.',
+    instagram: 'https://instagram.com/'
   },
   {
-    icon:  '🌐',
-    title: 'Interactive Design',
-    desc:  'Designing experiences where every pixel and interaction has purpose.',
+    name: 'Arya Choudhary',
+    role: 'Core Member',
+    photo: 'https://ui-avatars.com/api/?name=Arya+Choudhary&background=0D0914&color=00E0FF&size=128',
+    desc: 'Balances the chaotic combat mechanics and intelligence.',
+    instagram: 'https://instagram.com/'
   },
+  {
+    name: 'Utkarsh',
+    role: 'System Architect',
+    photo: 'https://ui-avatars.com/api/?name=Utkarsh&background=0D0914&color=7B61FF&size=128',
+    desc: 'Deep network integration and backend infrastructure.',
+    instagram: 'https://instagram.com/'
+  }
 ]
 
 export default function AboutUs() {
-  const disciplineRefs = useRef([])
+  const teamRefs = useRef([])
   const missionRef     = useRef(null)
-  const [visible, setVisible] = useState([false, false, false])
+  const [visible, setVisible] = useState([false, false, false, false])
+  const [activeImage, setActiveImage] = useState(null)
 
-  /* ── Stagger discipline cards on scroll ── */
+  /* ── Stagger team cards on scroll ── */
   useEffect(() => {
-    disciplineRefs.current.forEach((el, i) => {
+    teamRefs.current.forEach((el, i) => {
       if (!el) return
       const observer = new IntersectionObserver(
         ([entry]) => {
@@ -101,32 +115,65 @@ export default function AboutUs() {
           </p>
         </div>
 
-        {/* ── Discipline Cards ── */}
+        {/* ── Team Carousel ── */}
         <div
-          className="about__disciplines"
-          role="list"
-          aria-label="Our disciplines"
+          className="about__team-carousel"
+          role="region"
+          aria-label="Our Team Members"
         >
-          {DISCIPLINES.map((d, i) => (
+          {TEAM.map((member, i) => (
             <div
-              key={d.title}
-              className={`about__discipline${visible[i] ? ' visible' : ''}`}
-              ref={el => disciplineRefs.current[i] = el}
-              role="listitem"
+              key={member.name}
+              className={`about__team-card${visible[i] ? ' visible' : ''}`}
+              ref={el => teamRefs.current[i] = el}
             >
-              <div
-                className="about__discipline-icon"
-                aria-hidden="true"
+              <button 
+                className="about__team-photo-wrap" 
+                aria-label={`View ${member.name}'s photo full size`}
+                onClick={() => setActiveImage(member.photo)}
               >
-                {d.icon}
+                <img src={member.photo} alt={member.name} className="about__team-photo" />
+              </button>
+              <div className="about__team-info">
+                <h3 className="about__team-name">
+                  {member.name}
+                  <a href={member.instagram} target="_blank" rel="noopener noreferrer" className="about__team-social" aria-label={`${member.name} Instagram`}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                  </a>
+                </h3>
+                <span className="about__team-role">{member.role}</span>
+                <p className="about__team-desc">{member.desc}</p>
               </div>
-              <h3 className="about__discipline-title">{d.title}</h3>
-              <p className="about__discipline-desc">{d.desc}</p>
             </div>
           ))}
         </div>
 
       </div>
+
+      {/* ── Image Modal ── */}
+      {activeImage && (
+        <div 
+          className="about__image-modal" 
+          onClick={() => setActiveImage(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="about__image-modal-content" onClick={e => e.stopPropagation()}>
+            <button 
+              className="about__image-modal-close" 
+              onClick={() => setActiveImage(null)}
+              aria-label="Close image"
+            >
+              ✕
+            </button>
+            <img src={activeImage} alt="Full Size Avatar" className="about__image-modal-img" />
+          </div>
+        </div>
+      )}
     </section>
   )
 }

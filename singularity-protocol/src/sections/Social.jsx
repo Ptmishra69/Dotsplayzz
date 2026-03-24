@@ -1,3 +1,5 @@
+import { useModeSystem } from '../hooks/useModeSystem'
+import LineWaves from '../components/LineWaves'
 import '../styles/social.css'
 
 const PLATFORMS = [
@@ -49,8 +51,26 @@ const STATS = [
 ]
 
 export default function Social() {
+  const { isCombat } = useModeSystem()
+
   return (
     <section id="social" className="social section-enter" aria-label="Join the Community">
+      <LineWaves
+        speed={0.15}
+        innerLineCount={25}
+        outerLineCount={35}
+        warpIntensity={1.5}
+        rotation={-45}
+        edgeFadeWidth={0.1}
+        colorCycleSpeed={0.5}
+        brightness={1.2}
+        color1={isCombat ? '#FF3366' : '#00E0FF'}
+        color2={isCombat ? '#FF8C00' : '#7B61FF'}
+        color3="#FFFFFF"
+        enableMouseInteraction={true}
+        mouseInfluence={2.5}
+      />
+      
       <div className="social__inner">
 
         <div className="social__header">

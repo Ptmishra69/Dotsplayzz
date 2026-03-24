@@ -12,7 +12,7 @@
  * Sound files needed in public/assets/sounds/:
  *   hover.mp3   → https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3
  *   click.mp3   → https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3
- *   ambient.mp3 → https://assets.mixkit.co/active_storage/sfx/1181/1181-preview.mp3
+ *   ambient.mp3 → Space Ambience / Drone Drone Track
  *   glitch.mp3  → https://assets.mixkit.co/active_storage/sfx/2103/2103-preview.mp3
  *   charge.mp3  → https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3
  */
@@ -33,7 +33,7 @@ function getAudioCtx() {
 const SOUNDS = {
   hover:   { src: '/assets/sounds/hover.mp3',   volume: 0.28, pitch: true  },
   click:   { src: '/assets/sounds/click.mp3',   volume: 0.40, pitch: false },
-  ambient: { src: '/assets/sounds/ambient.mp3', volume: 0.20, pitch: false },
+  ambient: { src: 'https://assets.mixkit.co/active_storage/sfx/2572/2572-preview.mp3', volume: 0.25, pitch: false },
   glitch:  { src: '/assets/sounds/glitch.mp3',  volume: 0.45, pitch: false },
   charge:  { src: '/assets/sounds/charge.mp3',  volume: 0.35, pitch: false },
 }

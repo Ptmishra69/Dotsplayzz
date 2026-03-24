@@ -33,10 +33,31 @@ function Lighting({ isMobile }) {
   )
 }
 
-/* Camera stays perfectly flat — no rotation, no tilt */
+/* Camera animates from a tight, centred shot on the character to a wide shot */
 function CameraRig() {
   const { camera } = useThree()
-  useFrame(() => { camera.rotation.set(0, 0, 0) })
+  const { scrollRef } = useSceneContext()
+  
+  useFrame(() => {
+    camera.rotation.set(0, 0, 0)
+    
+    // Calculate scroll progress (0 at top, 1 at 100vh)
+    const vh = window.innerHeight
+    const p = Math.min(1, Math.max(0, scrollRef.current / vh))
+    
+    // Character is at x=0.8 in 3D space.
+    // To center the character when zoomed in, camera.x should be near 0.8.
+    // To zoom in, camera.z should be smaller (e.g. 2.5).
+    const targetX = 0.8 * (1 - p)      // 0.8 -> 0
+    const targetY = 0.2 + 0.1 * (1 - p) // 0.3 -> 0.2
+    const targetZ = 3.0 + (p * 3.0)    // 3.0 -> 6.0
+    
+    // Smooth lerp
+    camera.position.x += (targetX - camera.position.x) * 0.08
+    camera.position.y += (targetY - camera.position.y) * 0.08
+    camera.position.z += (targetZ - camera.position.z) * 0.08
+  })
+  
   return null
 }
 
@@ -73,7 +94,7 @@ export default function Scene({ frameVisible = false }) {
   return (
     <SceneContext.Provider value={{ scrollRef }}>
       <Canvas
-        style={{ position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'none' }}
+        style={{ position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'auto' }}
         camera={{ position: [0, 0.2, 6], fov: 46, near: 0.1, far: 100 }}
         dpr={pixelRatio}
         shadows={!isMobile}

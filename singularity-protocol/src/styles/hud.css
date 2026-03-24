@@ -84,7 +84,7 @@ body.mode-combat .hud__corner--br {
   top: 86px;
   left: 24px;
   color: var(--mode-primary, #00E0FF);
-  opacity: 0.82;
+  opacity: 0.55;
 }
 
 .hud__panel--tr {
@@ -184,4 +184,18 @@ body.mode-combat .hud__reticle-dot {
 }
 body.mode-combat .hud__reticle-line {
   background: rgba(255,59,92,0.25);
+}
+
+/* ── RESPONSIVE — hide panels on mobile to avoid overlap ── */
+@media (max-width: 1024px) {
+  .hud__panel { font-size: 0.5rem; opacity: 0.4; }
+  .hud__corner { width: 48px; height: 48px; }
+  .hud__reticle { display: none; }
+}
+
+@media (max-width: 768px) {
+  .hud__panel--tl,
+  .hud__panel--tr { display: none; }
+  .hud__corner { display: none; }
+  .hud__reticle { display: none; }
 }
