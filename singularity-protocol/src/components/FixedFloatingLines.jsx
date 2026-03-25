@@ -147,7 +147,8 @@ export default function FixedFloatingLines({
       alpha:           false,
       powerPreference: 'low-power'
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    const isMobile = window.innerWidth < 768;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 0.75 : 1.5));
     renderer.domElement.style.position = 'fixed';
     renderer.domElement.style.inset    = '0';
     renderer.domElement.style.width    = '100%';
@@ -156,8 +157,8 @@ export default function FixedFloatingLines({
     renderer.domElement.style.pointerEvents = 'none';
     container.appendChild(renderer.domElement);
 
-    const midCount = lineCount[0] ?? 5;
-    const botCount = lineCount[1] ?? 4;
+    const midCount = isMobile ? Math.min(lineCount[0] ?? 5, 3) : (lineCount[0] ?? 5);
+    const botCount = isMobile ? Math.min(lineCount[1] ?? 4, 3) : (lineCount[1] ?? 4);
     const midDist  = (lineDistance[0] ?? 4) * 0.01;
     const botDist  = (lineDistance[1] ?? 6) * 0.01;
 
@@ -234,10 +235,23 @@ export default function FixedFloatingLines({
       window.addEventListener('mouseleave', onMouseLeave);
     }
 
-    /* Render loop — always runs, canvas is fixed so no scroll conflict */
+    /* Tab visibility — pause when hidden */
+    let tabVisible = true;
+    const onVisChange = () => { tabVisible = !document.hidden; };
+    document.addEventListener('visibilitychange', onVisChange);
+
+    /* Render loop — throttled to ~30fps, pauses when tab hidden */
+    let frameCount = 0;
     const renderLoop = () => {
       if (!active) return;
       raf = requestAnimationFrame(renderLoop);
+
+      // Skip when tab hidden
+      if (!tabVisible) return;
+
+      // Throttle: render every other frame (~30fps)
+      frameCount++;
+      if (frameCount % 2 !== 0) return;
 
       uniforms.iTime.value = clock.getElapsedTime();
 
@@ -257,6 +271,7 @@ export default function FixedFloatingLines({
       active = false;
       cancelAnimationFrame(raf);
       clearTimeout(resizeTimer);
+      document.removeEventListener('visibilitychange', onVisChange);
       window.removeEventListener('resize', onResize);
       if (interactive) {
         window.removeEventListener('mousemove', onMouseMove);

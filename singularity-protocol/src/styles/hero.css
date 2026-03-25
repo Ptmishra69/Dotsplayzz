@@ -132,7 +132,7 @@
   position: absolute;
   bottom: 15%;
   left: 60%;
-  transform: translate(-50%, 0);
+  transform: translate(calc(-50% + 3px), 0);
   width: 650px;
   height: 650px;
   pointer-events: none;
@@ -510,7 +510,7 @@
 
   .hero__magic-rings {
     left: 50%;
-    transform: translate(-50%, 0);
+    transform: translate(calc(-50% + 3px), 0);
     width: 380px;
     height: 380px;
     bottom: 26%;

@@ -11,9 +11,10 @@ const STATUS_MESSAGES = [
 
 /* ─── Particle config ─── */
 const PARTICLE_COUNT = 50
+const MIN_DISPLAY_MS = 1500  // minimum time for logo entrance animation
 
 export default function Loader({ onComplete }) {
-  const { progress } = useProgress()           // live % from R3F
+  const { progress }                          = useProgress()   // live % from R3F
   const [displayProgress, setDisplayProgress] = useState(0)
   const [statusText, setStatusText]           = useState('')
   const [exiting, setExiting]                 = useState(false)
@@ -21,50 +22,50 @@ export default function Loader({ onComplete }) {
   const canvasRef       = useRef(null)
   const particlesRef    = useRef([])
   const animFrameRef    = useRef(null)
-  const statusIndexRef  = useRef(0)
   const typewriterRef   = useRef(null)
-  const hardCapRef      = useRef(null)
   const completedRef    = useRef(false)
+  const mountTimeRef    = useRef(Date.now())
 
-  /* ── Smooth progress display ── */
+  /* ── Smooth animated progress counter ── */
   useEffect(() => {
-    setDisplayProgress(prev => {
-      const next = Math.max(prev, Math.round(progress))
-      return next
-    })
+    let raf
+    const animate = () => {
+      setDisplayProgress(prev => {
+        const target = Math.round(progress)
+        if (prev >= target) return prev
+        // Smoothly interpolate towards real progress
+        const next = prev + Math.max(1, Math.ceil((target - prev) * 0.15))
+        return Math.min(next, target)
+      })
+      raf = requestAnimationFrame(animate)
+    }
+    raf = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(raf)
   }, [progress])
 
-  /* ── Hard cap: dismiss after 3 seconds max ── */
-  useEffect(() => {
-    hardCapRef.current = setTimeout(() => {
-      triggerExit()
-    }, 3000)
-
-    return () => clearTimeout(hardCapRef.current)
-  }, [])
-
-  /* ── Dismiss when progress hits 100 ── */
+  /* ── Trigger exit when truly ready ── */
   useEffect(() => {
     if (displayProgress >= 100) {
-      triggerExit()
+      // Wait for minimum display time so logo animation completes
+      const elapsed = Date.now() - mountTimeRef.current
+      const remaining = Math.max(0, MIN_DISPLAY_MS - elapsed)
+      const timer = setTimeout(() => triggerExit(), remaining)
+      return () => clearTimeout(timer)
     }
   }, [displayProgress])
 
-  /* ── Animate progress bar to 100 on hard cap ── */
   function triggerExit() {
     if (completedRef.current) return
     completedRef.current = true
 
-    clearTimeout(hardCapRef.current)
-
-    /* Animate to 100% then exit */
     setDisplayProgress(100)
+    // Small pause at 100% so user sees it, then cinematic fade
     setTimeout(() => {
       setExiting(true)
       setTimeout(() => {
         if (onComplete) onComplete()
-      }, 600)
-    }, 400)
+      }, 800)   // matches CSS exit transition
+    }, 300)
   }
 
   /* ── Typewriter effect ── */

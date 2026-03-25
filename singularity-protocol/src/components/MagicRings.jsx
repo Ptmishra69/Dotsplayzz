@@ -107,7 +107,7 @@ export default function MagicRings({
 
     let renderer;
     try {
-      renderer = new THREE.WebGLRenderer({ alpha: true });
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false });
     } catch {
       return;
     }
@@ -156,7 +156,8 @@ export default function MagicRings({
     const resize = () => {
       const w = mount.clientWidth;
       const h = mount.clientHeight;
-      const dpr = Math.min(window.devicePixelRatio, 2);
+      const isMobile = w < 768;
+      const dpr = isMobile ? Math.min(window.devicePixelRatio, 0.75) : Math.min(window.devicePixelRatio, 1.5);
       renderer.setSize(w, h);
       renderer.setPixelRatio(dpr);
       uniforms.uResolution.value.set(w * dpr, h * dpr);
@@ -185,9 +186,21 @@ export default function MagicRings({
     mount.addEventListener('mouseleave', onMouseLeave);
     mount.addEventListener('click', onClick);
 
+    // Viewport-gating: pause render when offscreen
+    let isVisible = true;
+    const visObs = new IntersectionObserver(
+      ([entry]) => { isVisible = entry.isIntersecting; },
+      { threshold: 0.0, rootMargin: '200px' }
+    );
+    visObs.observe(mount);
+
     let frameId;
     const animate = (t) => {
       frameId = requestAnimationFrame(animate);
+
+      // Skip GPU work when offscreen
+      if (!isVisible) return;
+
       const p = propsRef.current;
 
       smoothMouseRef.current[0] += (mouseRef.current[0] - smoothMouseRef.current[0]) * 0.08;
@@ -224,6 +237,7 @@ export default function MagicRings({
 
     return () => {
       cancelAnimationFrame(frameId);
+      visObs.disconnect();
       window.removeEventListener('resize', resize);
       ro.disconnect();
       mount.removeEventListener('mousemove', onMouseMove);

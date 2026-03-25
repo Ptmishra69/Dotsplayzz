@@ -247,10 +247,12 @@ export default function FloatingLines({
   const currentParallaxRef = useRef(new Vector2(0, 0));
 
   const getLineCount = waveType => {
-    if (typeof lineCount === 'number') return lineCount;
+    const isMobile = window.innerWidth < 768;
+    if (typeof lineCount === 'number') return isMobile ? Math.max(1, Math.floor(lineCount / 1.5)) : lineCount;
     if (!enabledWaves.includes(waveType)) return 0;
     const index = enabledWaves.indexOf(waveType);
-    return lineCount[index] ?? 6;
+    const count = lineCount[index] ?? 6;
+    return isMobile ? Math.max(1, Math.floor(count / 1.5)) : count;
   };
 
   const getLineDistance = waveType => {
@@ -278,8 +280,9 @@ export default function FloatingLines({
     const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
     camera.position.z = 1;
 
-    const renderer = new WebGLRenderer({ antialias: true, alpha: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    const isMobile = window.innerWidth < 768;
+    const renderer = new WebGLRenderer({ antialias: !isMobile, alpha: false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 0.75 : 1.5));
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
     container.appendChild(renderer.domElement);
@@ -374,9 +377,22 @@ export default function FloatingLines({
       renderer.domElement.addEventListener('pointerleave', handlePointerLeave);
     }
 
+    // Viewport-gating: pause render when offscreen
+    let isIntersecting = true;
+    const visObs = new IntersectionObserver(
+      ([entry]) => { isIntersecting = entry.isIntersecting; },
+      { threshold: 0.0, rootMargin: '200px' }
+    );
+    visObs.observe(container);
+
     let raf = 0;
     const renderLoop = () => {
       if (!active) return;
+      raf = requestAnimationFrame(renderLoop);
+
+      // Skip GPU work when offscreen
+      if (!isIntersecting) return;
+
       uniforms.iTime.value = clock.getElapsedTime();
       if (interactive) {
         currentMouseRef.current.lerp(targetMouseRef.current, mouseDamping);
@@ -389,13 +405,13 @@ export default function FloatingLines({
         uniforms.parallaxOffset.value.copy(currentParallaxRef.current);
       }
       renderer.render(scene, camera);
-      raf = requestAnimationFrame(renderLoop);
     };
     renderLoop();
 
     return () => {
       active = false;
       cancelAnimationFrame(raf);
+      visObs.disconnect();
       if (ro) ro.disconnect();
       if (interactive) {
         renderer.domElement.removeEventListener('pointermove', handlePointerMove);

@@ -8,29 +8,25 @@ const FEATURE_CARDS = [
     icon: '⚡',
     title: 'Adaptive AI',
     desc: 'Enemies evolve with your strategy. No two encounters play the same.',
-    gradient: 'linear-gradient(135deg, rgba(255,216,77,0.15), rgba(255,157,110,0.08))',
-    borderColor: 'rgba(255,216,77,0.3)',
+    accent: '#FFD84D',
   },
   {
     icon: '🌌',
     title: 'Space Exploration',
     desc: 'Seamless travel across procedurally shaped worlds.',
-    gradient: 'linear-gradient(135deg, rgba(0,224,255,0.12), rgba(123,97,255,0.08))',
-    borderColor: 'rgba(0,224,255,0.3)',
+    accent: '#00E0FF',
   },
   {
     icon: '🧠',
     title: 'Your Decisions',
     desc: 'Every choice reshapes the universe. The story is yours.',
-    gradient: 'linear-gradient(135deg, rgba(123,97,255,0.15), rgba(255,216,77,0.08))',
-    borderColor: 'rgba(123,97,255,0.3)',
+    accent: '#7B61FF',
   },
   {
     icon: '🚀',
     title: 'Real-Time Combat',
     desc: 'Fast, skill-based mechanics. No cooldowns.',
-    gradient: 'linear-gradient(135deg, rgba(255,157,110,0.15), rgba(0,224,255,0.08))',
-    borderColor: 'rgba(255,157,110,0.3)',
+    accent: '#FF3366',
   },
 ]
 
@@ -189,32 +185,46 @@ export default function SingularityProtocol({ onExploreGameplay }) {
           ))}
         </div>
 
+        {/* ── Energy Line ── */}
         <div className="singularity__energy-line" aria-hidden="true" />
 
-        {/* ── Feature Cards ── */}
-        <div className="singularity__cards" role="list" aria-label="Game features">
-          {FEATURE_CARDS.map((card, i) => (
-            <article
-              key={card.title}
-              className={`singularity__card${cardsVisible[i]?' visible':''}`}
-              ref={el => cardRefs.current[i] = el}
-              role="listitem"
-              aria-label={card.title}
-              style={{
-                '--card-gradient': card.gradient,
-                '--card-border': card.borderColor,
-              }}
-            >
-              <div className="singularity__card-icon-wrap" aria-hidden="true">
-                <span className="singularity__card-icon">{card.icon}</span>
-              </div>
-              <h3 className="singularity__card-title">{card.title}</h3>
-              <p className="singularity__card-desc">{card.desc}</p>
-              <div className="singularity__card-shine" />
-            </article>
-          ))}
-        </div>
+      </section>
 
+      {/* ── Bright Static Parallax Transition ── */}
+      <section className="singularity-bright" aria-label="Game vision">
+        
+        {/* Dark overlay specifically for the card area inside the bright section */ }
+        <div className="singularity-bright__overlay" aria-hidden="true" />
+        
+        <div className="singularity-bright__content">
+          <div className="singularity-bright__text-wrap">
+            <h2 className="singularity-bright__headline">Absolute<br/>Freedom.</h2>
+            <p className="singularity-bright__subtext">
+              No invisible walls. No dictated paths. 
+              The universe bends to your will.
+            </p>
+          </div>
+
+          {/* ── Feature Cards (Moved here as requested) ── */}
+          <div className="singularity__cards" role="list" aria-label="Game features">
+            {FEATURE_CARDS.map((card, i) => (
+              <article
+                key={card.title}
+                className={`singularity__modern-card${cardsVisible[i]?' visible':''}`}
+                ref={el => cardRefs.current[i] = el}
+                role="listitem"
+                aria-label={card.title}
+                style={{ '--accent-color': card.accent }}
+              >
+                <div className="singularity__modern-card-accent" />
+                <div className="singularity__modern-card-icon">{card.icon}</div>
+                <h3 className="singularity__modern-card-title">{card.title}</h3>
+                <p className="singularity__modern-card-desc">{card.desc}</p>
+              </article>
+            ))}
+          </div>
+
+        </div>
       </section>
 
       {/* ── Gameplay Modal ── */}
