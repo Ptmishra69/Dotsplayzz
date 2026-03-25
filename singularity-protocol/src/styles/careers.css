@@ -522,9 +522,27 @@
   .careers__apply-btn {
     width: 100%;
     justify-content: center;
+    padding: 10px 16px;
+    font-size: 11px;
+    height: 40px;
   }
   .careers__btn-primary {
     width: 100%;
     justify-content: center;
+    padding: 10px 16px;
+    font-size: 12px;
+    height: 44px;
+  }
+  .careers__culture-card {
+    padding: 16px 12px;
+    gap: 8px;
+  }
+  .careers__role-card {
+    padding: 18px 16px;
+    gap: 10px;
+  }
+  .careers__role-desc {
+    font-size: 12px;
+    line-height: 1.5;
   }
 }

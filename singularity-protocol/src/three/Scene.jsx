@@ -83,7 +83,7 @@ export default function Scene({ frameVisible = false }) {
     return () => mq.removeEventListener('change', h)
   }, [])
 
-  const pixelRatio = Math.min(window.devicePixelRatio, isMobile ? 0.75 : 1.5)
+  const pixelRatio = Math.min(window.devicePixelRatio, isMobile ? 1 : 1.5)
   const scrollRef  = useRef(0)
   useEffect(() => {
     const onScroll = () => { scrollRef.current = window.scrollY }

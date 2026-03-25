@@ -157,7 +157,7 @@ export default function MagicRings({
       const w = mount.clientWidth;
       const h = mount.clientHeight;
       const isMobile = w < 768;
-      const dpr = isMobile ? Math.min(window.devicePixelRatio, 0.75) : Math.min(window.devicePixelRatio, 1.5);
+      const dpr = isMobile ? Math.min(window.devicePixelRatio, 1) : Math.min(window.devicePixelRatio, 1.5);
       renderer.setSize(w, h);
       renderer.setPixelRatio(dpr);
       uniforms.uResolution.value.set(w * dpr, h * dpr);

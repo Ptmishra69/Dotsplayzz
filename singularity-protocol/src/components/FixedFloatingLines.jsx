@@ -148,7 +148,7 @@ export default function FixedFloatingLines({
       powerPreference: 'low-power'
     });
     const isMobile = window.innerWidth < 768;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 0.75 : 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 1.5));
     renderer.domElement.style.position = 'fixed';
     renderer.domElement.style.inset    = '0';
     renderer.domElement.style.width    = '100%';

@@ -596,6 +596,22 @@
   .singularity__cta-primary,
   .singularity__cta-secondary { width: 100%; max-width: 300px; justify-content: center; }
   
+  .singularity__modern-card {
+    padding: 16px;
+    gap: 8px;
+  }
+  .singularity__modern-card-icon {
+    font-size: 1.3rem;
+    margin-bottom: 2px;
+  }
+  .singularity__modern-card-title {
+    font-size: 12px;
+  }
+  .singularity__modern-card-desc {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
   .singularity-bright {
     min-height: 60vh;
     padding: 60px 20px;

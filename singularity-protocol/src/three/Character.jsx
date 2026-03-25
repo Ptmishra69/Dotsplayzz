@@ -190,13 +190,21 @@ export default function Character({ isMobile, frameVisible = false }) {
 
   useFrame(({ clock }) => {
     if (!floatRef.current) return
-    if (entryRef.current < 1) {
+    
+    let isAnimating = entryRef.current < 1;
+    
+    if (isAnimating) {
       entryRef.current = Math.min(1, clock.elapsedTime / 1.5)
       const s = 1.17 + entryRef.current * 0.13
       floatRef.current.scale.setScalar(s)
+      isAnimating = entryRef.current < 1;
     }
+    
     const floatY = Math.sin(clock.elapsedTime * 0.7) * 0.03
-    const scrollY = scrollRef.current * SCROLL_SPEED
+    
+    // User requested character shouldn't move on mobile until it reaches original place
+    const scrollY = (isMobile && isAnimating) ? 0 : (scrollRef.current * SCROLL_SPEED)
+    
     floatRef.current.position.y = -0.72 + floatY - scrollY
   })
 

@@ -282,7 +282,7 @@ export default function FloatingLines({
 
     const isMobile = window.innerWidth < 768;
     const renderer = new WebGLRenderer({ antialias: !isMobile, alpha: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 0.75 : 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 1.5));
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
     container.appendChild(renderer.domElement);
