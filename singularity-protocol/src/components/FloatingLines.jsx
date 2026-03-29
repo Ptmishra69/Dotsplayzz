@@ -246,6 +246,10 @@ export default function FloatingLines({
   const targetParallaxRef = useRef(new Vector2(0, 0));
   const currentParallaxRef = useRef(new Vector2(0, 0));
 
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('floating-lines-update', { detail: { linesGradient } }));
+  }, [linesGradient]);
+
   const getLineCount = waveType => {
     const isMobile = window.innerWidth < 768;
     if (typeof lineCount === 'number') return isMobile ? Math.max(1, Math.floor(lineCount / 1.5)) : lineCount;
@@ -323,14 +327,21 @@ export default function FloatingLines({
       lineGradientCount: { value: 0 }
     };
 
-    if (linesGradient && linesGradient.length > 0) {
-      const stops = linesGradient.slice(0, MAX_GRADIENT_STOPS);
+    const setGradient = (hexArray) => {
+      if (!hexArray || !hexArray.length) return;
+      const stops = hexArray.slice(0, MAX_GRADIENT_STOPS);
       uniforms.lineGradientCount.value = stops.length;
       stops.forEach((hex, i) => {
         const color = hexToVec3(hex);
         uniforms.lineGradient.value[i].set(color.x, color.y, color.z);
       });
-    }
+    };
+    setGradient(linesGradient);
+
+    const onPropsChange = (e) => {
+      if (e.detail?.linesGradient) setGradient(e.detail.linesGradient);
+    };
+    window.addEventListener('floating-lines-update', onPropsChange);
 
     const material = new ShaderMaterial({ uniforms, vertexShader, fragmentShader });
     const geometry = new PlaneGeometry(2, 2);
@@ -413,6 +424,7 @@ export default function FloatingLines({
       cancelAnimationFrame(raf);
       visObs.disconnect();
       if (ro) ro.disconnect();
+      window.removeEventListener('floating-lines-update', onPropsChange);
       if (interactive) {
         renderer.domElement.removeEventListener('pointermove', handlePointerMove);
         renderer.domElement.removeEventListener('pointerleave', handlePointerLeave);

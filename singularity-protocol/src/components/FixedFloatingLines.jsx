@@ -183,14 +183,16 @@ export default function FixedFloatingLines({
       lineGradientCount:  { value: 0 }
     };
 
-    if (linesGradient?.length > 0) {
-      const stops = linesGradient.slice(0, MAX_STOPS);
+    const updateGradient = (hexArray) => {
+      if (!hexArray || !hexArray.length) return;
+      const stops = hexArray.slice(0, MAX_STOPS);
       uniforms.lineGradientCount.value = stops.length;
       stops.forEach((hex,i) => {
         const c = hexToVec3(hex);
         uniforms.lineGradient.value[i].set(c.x, c.y, c.z);
       });
-    }
+    };
+    updateGradient(linesGradient);
 
     const material = new ShaderMaterial({ uniforms, vertexShader, fragmentShader });
     const geometry = new PlaneGeometry(2,2);
@@ -240,6 +242,19 @@ export default function FixedFloatingLines({
     const onVisChange = () => { tabVisible = !document.hidden; };
     document.addEventListener('visibilitychange', onVisChange);
 
+    /* Global Event Listener for Zero-Lag dynamic color switching */
+    const handleSetBg = (e) => {
+      const detail = e.detail;
+      if (!detail) return;
+      if (detail.linesGradient) {
+        updateGradient(detail.linesGradient);
+      }
+      if (detail.animationSpeed !== undefined) {
+        uniforms.animationSpeed.value = detail.animationSpeed;
+      }
+    };
+    window.addEventListener('setFloatingBg', handleSetBg);
+
     /* Render loop — throttled to ~30fps, pauses when tab hidden */
     let frameCount = 0;
     const renderLoop = () => {
@@ -273,6 +288,7 @@ export default function FixedFloatingLines({
       clearTimeout(resizeTimer);
       document.removeEventListener('visibilitychange', onVisChange);
       window.removeEventListener('resize', onResize);
+      window.removeEventListener('setFloatingBg', handleSetBg);
       if (interactive) {
         window.removeEventListener('mousemove', onMouseMove);
         window.removeEventListener('mouseleave', onMouseLeave);

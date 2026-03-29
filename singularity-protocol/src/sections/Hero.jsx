@@ -135,6 +135,20 @@ export default function Hero({ onWatchTrailer }) {
     rafId.current = requestAnimationFrame(animate);
   }, []);
 
+  // ── SET GLOBAL FLOATING BACKGROUND DEFAULTS ──
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        window.dispatchEvent(new CustomEvent('setFloatingBg', {
+          detail: { linesGradient: ['#FFD84D','#FFC300','#00E0FF','#7CF7C9','#FFD84D'], animationSpeed: 0.6 }
+        }));
+      }
+    }, { threshold: 0.3 });
+    obs.observe(sectionRef.current);
+    return () => obs.disconnect();
+  }, []);
+
   // ── INITIAL STATE ──
   useEffect(() => {
     // Hide text/rings on load (Phase 0)
