@@ -7,7 +7,7 @@
   position: relative;
   padding: 120px 0 100px;
   overflow: hidden;
-  background: linear-gradient(180deg, #06040A 0%, #04060F 100%);
+  background: #04060F;
 }
 
 /* Hard glowing neon separation from game section */
@@ -23,17 +23,17 @@
   z-index: 10;
 }
 
-/* Ambient background glow */
+/* Ambient radial bright background centered on the text */
 .about::after {
   content: '';
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100vw;
-  height: 800px;
-  background: radial-gradient(ellipse at center, var(--color-neon-alpha) 0%, transparent 60%);
+  inset: 0;
+  background-color: var(--team-bg-color, #FF8C00);
+  transition: background-color 0.8s ease-in-out;
+  mask-image: radial-gradient(ellipse 65% 55% at 50% 50%, black 0%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 65% 55% at 50% 50%, black 0%, transparent 100%);
   pointer-events: none;
+  opacity: 0.25; /* Controls the intensity of the bright background */
   z-index: 0;
 }
 

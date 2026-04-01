@@ -285,47 +285,80 @@
 
 @media (max-width: 768px) {
   .social {
-    padding: 80px 0;
+    padding: 60px 0;
   }
+
   .social__inner {
-    gap: 50px;
+    gap: 36px;
+    padding: 0 16px;
   }
+
+  .social__header { gap: 10px; }
+  .social__subtext { font-size: .9rem; }
+
+  /* Stats: keep side-by-side, compact */
+  .social__stats {
+    flex-direction: row;
+    gap: 0;
+    padding: 20px 16px;
+    width: 100%;
+    justify-content: space-around;
+  }
+  .social__stat-number { font-size: clamp(1.5rem, 6vw, 2rem); }
+  .social__stat-label  { font-size: 10px; letter-spacing: .1em; }
+
+  /* ── 2×2 grid for platform cards ── */
   .social__platforms {
-    flex-direction: column;
-    align-items: center;
-  }
-  .social__card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
     max-width: 100%;
     width: 100%;
   }
-  .social__stats {
-    flex-direction: column;
-    gap: 30px;
-    padding: 30px;
+
+  /* 5th card (Reddit) spans full width so grid looks clean */
+  .social__card:last-child {
+    grid-column: 1 / -1;
+    max-width: 260px;
+    margin: 0 auto;
     width: 100%;
   }
+
+  .social__card {
+    flex: unset;
+    max-width: 100%;
+    width: 100%;
+    padding: 16px 12px;
+    gap: 8px;
+    border-radius: 12px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .social__card-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
+    border-radius: 8px;
+  }
+  .social__card-name   { font-size: 11px; letter-spacing: .08em; }
+  .social__card-handle { font-size: 11px; }
+  .social__card-desc   { font-size: 10px; margin-top: 4px; }
+  .social__card-arrow  { padding-top: 6px; font-size: 14px; }
+
+  /* CTAs stacked, full-width */
   .social__ctas {
     flex-direction: column;
     width: 100%;
+    gap: 12px;
+    margin-top: 0;
   }
   .social__cta-primary,
   .social__cta-secondary {
     width: 100%;
     justify-content: center;
-    padding: 10px 16px;
+    padding: 12px 16px;
     font-size: 11px;
     height: 44px;
-  }
-  .social__card {
-    padding: 16px 12px;
-    gap: 8px;
-  }
-  .social__card-name {
-    font-size: 12px;
-  }
-  .social__card-icon {
-    width: 44px;
-    height: 44px;
-    font-size: 1.4rem;
   }
 }

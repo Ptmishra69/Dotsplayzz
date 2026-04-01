@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useModeSystem } from '../hooks/useModeSystem'
 import '../styles/about.css'
 
 const TEAM = [
@@ -37,6 +38,7 @@ export default function AboutUs() {
   const missionRef     = useRef(null)
   const [visible, setVisible] = useState([false, false, false, false])
   const [activeImage, setActiveImage] = useState(null)
+  const { isCombat } = useModeSystem()
 
   /* ── Stagger team cards on scroll ── */
   useEffect(() => {
@@ -66,11 +68,16 @@ export default function AboutUs() {
     if (el) el.scrollIntoView({ behavior: 'smooth' })
   }
 
+  // Normal mode = opposite of blue (#FF8C00 Orange)
+  // Combat mode = opposite of red (#00E0FF Cyan)
+  const teamBgColor = isCombat ? '#00E0FF' : '#FF8C00'
+
   return (
     <section
       id="about"
       className="about"
       aria-label="About Us — who we are"
+      style={{ '--team-bg-color': teamBgColor }}
     >
       <div className="about__inner">
 
