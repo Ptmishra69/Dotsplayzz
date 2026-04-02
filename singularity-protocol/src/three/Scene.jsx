@@ -33,8 +33,8 @@ function Lighting({ isMobile }) {
   )
 }
 
-/* Camera animates from a tight, centred shot on the character to a wide shot */
-function CameraRig() {
+/* Camera animates from a tight shot to a wide shot */
+function CameraRig({ isMobile }) {
   const { camera } = useThree()
   const { scrollRef } = useSceneContext()
   
@@ -45,12 +45,22 @@ function CameraRig() {
     const vh = window.innerHeight
     const p = Math.min(1, Math.max(0, scrollRef.current / vh))
     
-    // Character is at x=0.8 in 3D space.
-    // To center the character when zoomed in, camera.x should be near 0.8.
-    // To zoom in, camera.z should be smaller (e.g. 2.5).
-    const targetX = 0.8 * (1 - p)      // 0.8 -> 0
-    const targetY = 0.2 + 0.1 * (1 - p) // 0.3 -> 0.2
-    const targetZ = 3.0 + (p * 3.0)    // 3.0 -> 6.0
+    let targetX, targetY, targetZ;
+    
+    if (isMobile) {
+      // Mobile Phase 0: Character is centered and extremely close
+      // Mobile Phase 1: Character shrinks into background (still centered)
+      targetX = 0.8;                 // The character is at 0.8, setting camera.x=0.8 centers it perfectly
+      targetY = 0.1;                 // Stable height
+      targetZ = 2.0 + (p * 4.0);     // 2.0 -> 6.0
+    } else {
+      // Desktop Phase 0: Character is enlarged but positioned on the right
+      // Desktop Phase 1: Character shrinks to original, stays on right
+      // Character is at 0.8. Setting camera.x=0 puts character on right.
+      targetX = 0.0;
+      targetY = 0.15;                // A little higher to show details
+      targetZ = 3.0 + (p * 3.0);     // 3.0 -> 6.0
+    }
     
     // Smooth lerp
     camera.position.x += (targetX - camera.position.x) * 0.08
@@ -65,7 +75,7 @@ function SceneContent({ isMobile, frameVisible }) {
   return (
     <>
       <Lighting isMobile={isMobile} />
-      <CameraRig />
+      <CameraRig isMobile={isMobile} />
       <Suspense fallback={null}>
         <Character isMobile={isMobile} frameVisible={frameVisible} />
         <Planet    isMobile={isMobile} />

@@ -1,11 +1,3 @@
-// src/sections/Hero.jsx — v4
-// Cinematic scroll-driven intro:
-// Phase 0 (scroll=0):  Character ENLARGED + centered, ship centre-left,
-//                      bg + sun visible. NO text, NO navbar, NO rings.
-// Phase 1 (scroll→vh): Character shrinks to normal, text/navbar/rings fade in,
-//                      ship flies to upper-left.
-// Phase 2 (scroll>vh): Normal scroll-parallax into next section.
-
 import { useEffect, useRef, useCallback, Suspense, lazy } from 'react';
 import HUD from '../components/HUD';
 import MagicRings from '../components/MagicRings';
@@ -14,6 +6,7 @@ import '../styles/hero.css';
 const Scene = lazy(() => import('../three/Scene'));
 import { useGlowSystem } from '../hooks/useGlowSystem';
 import { useModeSystem } from '../hooks/useModeSystem';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 // ── Mouse parallax — very subtle ──
 const MOUSE = {
@@ -27,6 +20,7 @@ export default function Hero({ onWatchTrailer }) {
   const sectionRef = useRef(null);
   const { glowScalar } = useGlowSystem();
   const { isCombat }   = useModeSystem();
+  const isMobile       = useIsMobile(768);
 
   // Layer refs
   const bgRef = useRef(null);
@@ -37,6 +31,7 @@ export default function Hero({ onWatchTrailer }) {
   const labelRef = useRef(null);
   const contentRef = useRef(null);
   const scrollHint = useRef(null);
+  const mobileScrollHintRef = useRef(null);
   const hudRef = useRef(null);
 
   // Mouse / raf
@@ -47,6 +42,9 @@ export default function Hero({ onWatchTrailer }) {
 
   // ── MOUSE HANDLER ──
   const onMouseMove = useCallback((e) => {
+    // Disable interaction on mobile when in intro phase
+    if (isMobile && phase.current < 0.9) return;
+    
     const cx = window.innerWidth / 2;
     const cy = window.innerHeight / 2;
     const dx = (e.clientX - cx) / cx;
@@ -54,7 +52,7 @@ export default function Hero({ onWatchTrailer }) {
     const dz = 0.30;
     mouse.current.x = Math.abs(dx) < dz ? 0 : (dx - Math.sign(dx) * dz) / (1 - dz);
     mouse.current.y = Math.abs(dy) < dz ? 0 : (dy - Math.sign(dy) * dz) / (1 - dz);
-  }, []);
+  }, [isMobile]);
 
   // ── SCROLL HANDLER ──
   const onScroll = useCallback(() => {
@@ -70,19 +68,14 @@ export default function Hero({ onWatchTrailer }) {
     // ── MAGIC RINGS: fade in & sync DOM position/scale with 3D camera ──
     if (ringsRef.current) {
       ringsRef.current.style.opacity = p.toFixed(3);
-      // Character is centered at 50% when p=0, moves to 61.5% when p=1
-      const ringLeft = 50 + (p * 11.5);
-      ringsRef.current.style.left = `${ringLeft.toFixed(1)}%`;
-      // Camera Z goes from 3.0 (2x zoom) to 6.0 (1x zoom). So DOM scale shrinks 2.0 -> 1.0
-      const ringScale = 2.0 - p;
+      // Removed broken left property interpolation causing the glitch. Now pure CSS.
+      const ringScale = isMobile ? 1.5 - (p * 0.5) : 2.0 - p;
       ringsRef.current.style.transform = `translate(-50%, 0) scale(${ringScale.toFixed(3)})`;
     }
 
     // ── PLAYER LABEL: sync position with Character pan ──
     if (labelRef.current) {
       labelRef.current.style.opacity = p.toFixed(3);
-      const labelLeft = 50 + (p * 11.5);
-      labelRef.current.style.left = `${labelLeft.toFixed(1)}%`;
     }
 
     // ── TEXT: fades in + slides up ──
@@ -93,14 +86,28 @@ export default function Hero({ onWatchTrailer }) {
 
     // ── SHIP: starts centre-left, moves to upper-left corner ──
     if (shipRef.current) {
-      const sx = p * -15;
-      const sy2 = p * -5;
-      shipRef.current.style.transform = `translate(${sx.toFixed(2)}vw, ${sy2.toFixed(2)}vh)`;
+      if (isMobile) {
+        // Mobile: Starts huge at the top, scales down and moves away
+        const scale = 1.3 - (p * 0.3);
+        const sy2 = p * -15; // Move up out of the way
+        shipRef.current.style.transform = `translate(0vw, ${sy2.toFixed(2)}vh) scale(${scale.toFixed(2)})`;
+      } else {
+        // Desktop: Subtle slide
+        const sx = p * -15;
+        const sy2 = p * -5;
+        shipRef.current.style.transform = `translate(${sx.toFixed(2)}vw, ${sy2.toFixed(2)}vh) scale(1)`;
+      }
     }
 
-    // ── SCROLL HINT: fades out as user scrolls ──
+    // ── SCROLL HINT (Desktop): fades out as user scrolls ──
     if (scrollHint.current) {
       scrollHint.current.style.opacity = (1 - p * 2).toFixed(3);
+    }
+    
+    // ── MOBILE SCROLL HINT: falls out aggressively ──
+    if (mobileScrollHintRef.current) {
+      mobileScrollHintRef.current.style.opacity = (1 - p * 3).toFixed(3);
+      mobileScrollHintRef.current.style.transform = `translate(-50%, ${(p * 20).toFixed(1)}px)`;
     }
 
     // ── HUD: fade in with content ──
@@ -118,7 +125,7 @@ export default function Hero({ onWatchTrailer }) {
       if (bgRef.current) bgRef.current.style.transform = '';
       if (sunRef.current) sunRef.current.style.transform = '';
     }
-  }, []);
+  }, [isMobile]);
 
   // ── ANIMATION LOOP — subtle mouse nudge ──
   const animate = useCallback(() => {
@@ -302,11 +309,23 @@ export default function Hero({ onWatchTrailer }) {
           </div>
         </div>
 
-        {/* Scroll hint — visible only during intro */}
-        <div className="hero__scroll-hint" ref={scrollHint} aria-hidden="true">
-          <div className="hero__scroll-line" />
-          SCROLL
-        </div>
+        {/* Scroll hint — visible only during intro (Desktop) */}
+        {!isMobile && (
+          <div className="hero__scroll-hint" ref={scrollHint} aria-hidden="true">
+            <div className="hero__scroll-line" />
+            SCROLL
+          </div>
+        )}
+
+        {/* Mobile Scroll Hint — centered between the legs at Phase 0 */}
+        {isMobile && (
+          <div className="hero__mobile-scroll-hint" ref={mobileScrollHintRef}>
+            <span className="hero__mobile-scroll-text">SCROLL DOWN</span>
+            <div className="hero__mobile-scroll-arrows">
+              <span>↓</span>
+            </div>
+          </div>
+        )}
 
       </section>
     </div>

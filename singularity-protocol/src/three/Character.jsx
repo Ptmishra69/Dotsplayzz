@@ -147,10 +147,28 @@ function CharacterMesh({ isMobile }) {
 
   useFrame(() => {
     if (!meshRef.current) return
-    if (state.isDragging) {
+    
+    // Disable 3D rotation dragging during Mobile Phase 0
+    let interactionDisabled = false;
+    if (isMobile) {
+      const vh = window.innerHeight;
+      const p = Math.min(1, Math.max(0, window.scrollY / (vh * 2)));
+      if (p < 0.9) interactionDisabled = true;
+    }
+
+    if (state.isDragging && !interactionDisabled) {
       meshRef.current.rotation.y = state.rotY
       meshRef.current.rotation.x = state.rotX
     } else {
+      // If disabled safely flush the state without applying it
+      if (interactionDisabled) {
+        state.isDragging = false;
+        state.rotY = 0;
+        state.rotX = 0;
+        state.velY = 0;
+        state.velX = 0;
+      }
+
       // Apply remaining velocity with friction
       state.rotY += state.velY; state.rotX += state.velX
       state.velY *= 0.80; state.velX *= 0.80
@@ -159,10 +177,16 @@ function CharacterMesh({ isMobile }) {
       state.rotY += (0 - state.rotY) * 0.03
       state.rotX += (0 - state.rotX) * 0.03
 
-      const tY = state.rotY + state.mouseX * 0.02
-      const tX = state.rotX + state.mouseY * -0.008
-      meshRef.current.rotation.y += (tY - meshRef.current.rotation.y) * 0.05
-      meshRef.current.rotation.x += (tX - meshRef.current.rotation.x) * 0.05
+      if (!interactionDisabled) {
+        const tY = state.rotY + state.mouseX * 0.02
+        const tX = state.rotX + state.mouseY * -0.008
+        meshRef.current.rotation.y += (tY - meshRef.current.rotation.y) * 0.05
+        meshRef.current.rotation.x += (tX - meshRef.current.rotation.x) * 0.05
+      } else {
+        // Enforce neutral stance
+        meshRef.current.rotation.y += (0 - meshRef.current.rotation.y) * 0.1
+        meshRef.current.rotation.x += (0 - meshRef.current.rotation.x) * 0.1
+      }
     }
   })
 
