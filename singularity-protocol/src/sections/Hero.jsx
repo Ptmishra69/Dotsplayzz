@@ -19,8 +19,8 @@ const MAX_PX = 14;
 export default function Hero({ onWatchTrailer }) {
   const sectionRef = useRef(null);
   const { glowScalar } = useGlowSystem();
-  const { isCombat }   = useModeSystem();
-  const isMobile       = useIsMobile(768);
+  const { isCombat } = useModeSystem();
+  const isMobile = useIsMobile(768);
 
   // Layer refs
   const bgRef = useRef(null);
@@ -44,7 +44,7 @@ export default function Hero({ onWatchTrailer }) {
   const onMouseMove = useCallback((e) => {
     // Disable interaction on mobile when in intro phase
     if (isMobile && phase.current < 0.9) return;
-    
+
     const cx = window.innerWidth / 2;
     const cy = window.innerHeight / 2;
     const dx = (e.clientX - cx) / cx;
@@ -103,7 +103,7 @@ export default function Hero({ onWatchTrailer }) {
     if (scrollHint.current) {
       scrollHint.current.style.opacity = (1 - p * 2).toFixed(3);
     }
-    
+
     // ── MOBILE SCROLL HINT: falls out aggressively ──
     if (mobileScrollHintRef.current) {
       mobileScrollHintRef.current.style.opacity = (1 - p * 3).toFixed(3);
@@ -148,7 +148,7 @@ export default function Hero({ onWatchTrailer }) {
     const obs = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) {
         window.dispatchEvent(new CustomEvent('setFloatingBg', {
-          detail: { linesGradient: ['#FFD84D','#FFC300','#00E0FF','#7CF7C9','#FFD84D'], animationSpeed: 0.6 }
+          detail: { linesGradient: ['#FFD84D', '#FFC300', '#00E0FF', '#7CF7C9', '#FFD84D'], animationSpeed: 0.6 }
         }));
       }
     }, { threshold: 0.3 });

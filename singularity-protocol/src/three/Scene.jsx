@@ -5,8 +5,9 @@
  */
 import { createContext, useContext, useRef, useEffect, useState, Suspense } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import Character from './Character'
-import Planet    from './Planet'
+import Planet from './Planet'
 
 export const SceneContext = createContext({ scrollRef: { current: 0 } })
 export function useSceneContext() { return useContext(SceneContext) }
@@ -24,7 +25,7 @@ function Lighting({ isMobile }) {
       {/* Key: upper-right warm amber matching the sun */}
       <directionalLight position={[6, 8, 4]} intensity={1.5} color="#FFD0A0" castShadow />
       {/* Cyan rim from left */}
-      <pointLight position={[-3, 2, 3]}  intensity={1.8} color="#00E0FF" distance={12} decay={2} />
+      <pointLight position={[-3, 2, 3]} intensity={1.8} color="#00E0FF" distance={12} decay={2} />
       {/* Purple atmospheric fill */}
       <pointLight position={[2, -2, -3]} intensity={0.7} color="#7B61FF" distance={10} decay={2} />
       {/* Ground bounce */}
@@ -37,16 +38,16 @@ function Lighting({ isMobile }) {
 function CameraRig({ isMobile }) {
   const { camera } = useThree()
   const { scrollRef } = useSceneContext()
-  
+
   useFrame(() => {
     camera.rotation.set(0, 0, 0)
-    
+
     // Calculate scroll progress (0 at top, 1 at 100vh)
     const vh = window.innerHeight
     const p = Math.min(1, Math.max(0, scrollRef.current / vh))
-    
+
     let targetX, targetY, targetZ;
-    
+
     if (isMobile) {
       // Mobile Phase 0: Character is centered and extremely close
       // Mobile Phase 1: Character shrinks into background (still centered)
@@ -61,13 +62,13 @@ function CameraRig({ isMobile }) {
       targetY = 0.15;                // A little higher to show details
       targetZ = 3.0 + (p * 3.0);     // 3.0 -> 6.0
     }
-    
+
     // Smooth lerp
     camera.position.x += (targetX - camera.position.x) * 0.08
     camera.position.y += (targetY - camera.position.y) * 0.08
     camera.position.z += (targetZ - camera.position.z) * 0.08
   })
-  
+
   return null
 }
 
@@ -78,8 +79,19 @@ function SceneContent({ isMobile, frameVisible }) {
       <CameraRig isMobile={isMobile} />
       <Suspense fallback={null}>
         <Character isMobile={isMobile} frameVisible={frameVisible} />
-        <Planet    isMobile={isMobile} />
+        <Planet isMobile={isMobile} />
       </Suspense>
+
+      {/* Bloom post-processing — sun-like divine aura */}
+      <EffectComposer multisampling={0}>
+        <Bloom
+          intensity={isMobile ? 1.0 : 2.0}
+          luminanceThreshold={0.15}
+          luminanceSmoothing={0.9}
+          mipmapBlur
+          radius={0.9}
+        />
+      </EffectComposer>
     </>
   )
 }
@@ -88,13 +100,13 @@ export default function Scene({ frameVisible = false }) {
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)')
-    const h  = e => setIsMobile(e.matches)
+    const h = e => setIsMobile(e.matches)
     mq.addEventListener('change', h)
     return () => mq.removeEventListener('change', h)
   }, [])
 
   const pixelRatio = Math.min(window.devicePixelRatio, isMobile ? 1 : 1.5)
-  const scrollRef  = useRef(0)
+  const scrollRef = useRef(0)
   useEffect(() => {
     const onScroll = () => { scrollRef.current = window.scrollY }
     window.addEventListener('scroll', onScroll, { passive: true })

@@ -5,7 +5,7 @@
  * GroundShadow for grounding
  * 5-light cinematic rig
  */
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import * as THREE from 'three'
@@ -67,34 +67,212 @@ if (typeof window !== 'undefined') {
   window.addEventListener('touchend', () => { state.isDragging = false }, { passive: true })
 }
 
-/* ── Ring Platform ── */
-function RingPlatform() {
+/* ══ Ring Platform — animated emissive pulse ══ */
+function RingPlatform({ isMobile }) {
   const ringRef = useRef(), glowRef = useRef(), pulseRef = useRef()
+  const ringMatRef = useRef(), glowMatRef = useRef()
+
   useFrame(({ clock }) => {
     const t = clock.elapsedTime
     if (ringRef.current) ringRef.current.rotation.y = t * 0.3
-    if (glowRef.current?.material) glowRef.current.material.opacity = 0.35 + 0.15 * Math.sin(t * 1.2)
-    if (pulseRef.current?.material) pulseRef.current.material.opacity = 0.12 + 0.08 * Math.sin(t * 0.8)
+    if (glowRef.current?.material) glowRef.current.material.opacity = 0.45 + 0.2 * Math.sin(t * 1.2)
+    if (pulseRef.current?.material) pulseRef.current.material.opacity = 0.18 + 0.1 * Math.sin(t * 0.8)
+
+    // Animated emissive pulsing on ring
+    if (ringMatRef.current) {
+      ringMatRef.current.emissiveIntensity = 1.5 + Math.sin(t * 2.0) * 0.8
+    }
+    if (glowMatRef.current) {
+      glowMatRef.current.emissiveIntensity = 0.8 + Math.sin(t * 1.5) * 0.5
+    }
   })
+
   return (
     <group position={[0, -HH + 0.05, 0]}>
+      {/* Main ring — pulsing cyan emissive, feeds bloom hard */}
       <mesh ref={ringRef} rotation={[-Math.PI / 2, 0, 0]}>
         <torusGeometry args={[0.7, 0.04, 16, 128]} />
-        <meshBasicMaterial color="#FFFFFF" transparent opacity={0.95} />
+        <meshStandardMaterial ref={ringMatRef} color="#FFFFFF" emissive="#00E0FF" emissiveIntensity={1.5} transparent opacity={0.95} />
       </mesh>
+      {/* Soft outer ring glow */}
       <mesh rotation={[-Math.PI / 2, 0, 0]}>
         <torusGeometry args={[0.7, 0.18, 16, 64]} />
-        <meshBasicMaterial color="#AAFFFF" transparent opacity={0.15} />
+        <meshBasicMaterial color="#AAFFFF" transparent opacity={0.22} />
       </mesh>
+      {/* Inner glow disc — strong cyan for bloom pickup */}
       <mesh ref={glowRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]}>
         <circleGeometry args={[1.2, 64]} />
-        <meshBasicMaterial color="#00E0FF" transparent opacity={0.35} side={THREE.DoubleSide} />
+        <meshStandardMaterial ref={glowMatRef} color="#00E0FF" emissive="#00E0FF" emissiveIntensity={0.8} transparent opacity={0.45} side={THREE.DoubleSide} />
       </mesh>
+      {/* Outer atmospheric pulse */}
       <mesh ref={pulseRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]}>
         <circleGeometry args={[2.2, 64]} />
-        <meshBasicMaterial color="#7B61FF" transparent opacity={0.12} side={THREE.DoubleSide} />
+        <meshBasicMaterial color="#7B61FF" transparent opacity={0.18} side={THREE.DoubleSide} />
       </mesh>
     </group>
+  )
+}
+
+/* ══ Sun Aura — large emissive sphere behind the character creating a solar corona ══ */
+function SunAura({ isMobile }) {
+  const auraRef = useRef()
+  const matRef = useRef()
+  const coreRef = useRef()
+  const coreMatRef = useRef()
+
+  // Divine color palette: cycle between cyan, gold, and purple
+  const colorA = useMemo(() => new THREE.Color('#00E0FF'), [])
+  const colorB = useMemo(() => new THREE.Color('#FFD060'), [])
+  const colorC = useMemo(() => new THREE.Color('#9B6DFF'), [])
+  const tempColor = useMemo(() => new THREE.Color(), [])
+
+  useFrame(({ clock }) => {
+    const t = clock.elapsedTime
+
+    // Slow breathing scale
+    if (auraRef.current) {
+      const s = 1.0 + Math.sin(t * 0.5) * 0.08
+      auraRef.current.scale.setScalar(s)
+    }
+
+    // Animate emissive color cycling: cyan → gold → purple → cyan
+    const cycle = (t * 0.15) % 1           // full cycle every ~6.7s
+    if (cycle < 0.33) {
+      tempColor.lerpColors(colorA, colorB, cycle / 0.33)
+    } else if (cycle < 0.66) {
+      tempColor.lerpColors(colorB, colorC, (cycle - 0.33) / 0.33)
+    } else {
+      tempColor.lerpColors(colorC, colorA, (cycle - 0.66) / 0.34)
+    }
+
+    // Apply to outer aura
+    if (matRef.current) {
+      matRef.current.emissive.copy(tempColor)
+      matRef.current.emissiveIntensity = 1.8 + Math.sin(t * 1.5) * 0.6
+      matRef.current.opacity = 0.12 + Math.sin(t * 0.8) * 0.04
+    }
+
+    // Inner bright core — hotter, more stable
+    if (coreMatRef.current) {
+      coreMatRef.current.emissive.copy(tempColor)
+      coreMatRef.current.emissiveIntensity = 2.5 + Math.sin(t * 2.0) * 1.0
+      coreMatRef.current.opacity = 0.18 + Math.sin(t * 1.2) * 0.06
+    }
+  })
+
+  const auraSize = isMobile ? 1.6 : 2.2
+  const coreSize = isMobile ? 0.6 : 0.9
+
+  return (
+    <group position={[0, 0.2, -0.8]}>
+      {/* Outer aura sphere — large, soft, feeds bloom for the solar corona */}
+      <mesh ref={auraRef}>
+        <sphereGeometry args={[auraSize, 32, 32]} />
+        <meshStandardMaterial
+          ref={matRef}
+          color="#000000"
+          emissive="#00E0FF"
+          emissiveIntensity={1.8}
+          transparent
+          opacity={0.12}
+          side={THREE.BackSide}
+          depthWrite={false}
+        />
+      </mesh>
+      {/* Inner core — hotter, brighter, smaller */}
+      <mesh ref={coreRef}>
+        <sphereGeometry args={[coreSize, 24, 24]} />
+        <meshStandardMaterial
+          ref={coreMatRef}
+          color="#000000"
+          emissive="#FFD060"
+          emissiveIntensity={2.5}
+          transparent
+          opacity={0.18}
+          side={THREE.BackSide}
+          depthWrite={false}
+        />
+      </mesh>
+    </group>
+  )
+}
+
+/* ══ Divine Particles — tiny emissive points orbiting the character ══ */
+const PARTICLE_COUNT = 50
+
+function DivineParticles({ isMobile }) {
+  const pointsRef = useRef()
+
+  // Generate random orbits for each particle
+  const particleData = useMemo(() => {
+    const data = []
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      data.push({
+        radius: 0.8 + Math.random() * 1.5,         // orbit radius
+        height: (Math.random() - 0.5) * 3.0,        // vertical spread
+        speed: 0.3 + Math.random() * 0.7,            // orbit speed
+        phase: Math.random() * Math.PI * 2,          // starting angle
+        vertSpeed: (Math.random() - 0.5) * 0.3,      // vertical drift
+        size: 0.015 + Math.random() * 0.025,          // particle size
+      })
+    }
+    return data
+  }, [])
+
+  // Pre-allocate geometry buffers
+  const [positions, colors] = useMemo(() => {
+    const pos = new Float32Array(PARTICLE_COUNT * 3)
+    const col = new Float32Array(PARTICLE_COUNT * 3)
+    // Initialize colors: mix of cyan, purple, gold
+    const palette = [
+      new THREE.Color('#00E0FF'),
+      new THREE.Color('#7B61FF'),
+      new THREE.Color('#FFD060'),
+      new THREE.Color('#FFFFFF'),
+    ]
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const c = palette[Math.floor(Math.random() * palette.length)]
+      col[i * 3] = c.r
+      col[i * 3 + 1] = c.g
+      col[i * 3 + 2] = c.b
+    }
+    return [pos, col]
+  }, [])
+
+  useFrame(({ clock }) => {
+    if (!pointsRef.current) return
+    const t = clock.elapsedTime
+    const geo = pointsRef.current.geometry
+    const posAttr = geo.attributes.position
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const p = particleData[i]
+      const angle = p.phase + t * p.speed
+      posAttr.array[i * 3] = Math.cos(angle) * p.radius
+      posAttr.array[i * 3 + 1] = p.height + Math.sin(t * p.vertSpeed + p.phase) * 0.5
+      posAttr.array[i * 3 + 2] = Math.sin(angle) * p.radius
+    }
+    posAttr.needsUpdate = true
+  })
+
+  if (isMobile) return null   // Skip particles on mobile for performance
+
+  return (
+    <points ref={pointsRef}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" array={positions} count={PARTICLE_COUNT} itemSize={3} />
+        <bufferAttribute attach="attributes-color" array={colors} count={PARTICLE_COUNT} itemSize={3} />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.04}
+        vertexColors
+        transparent
+        opacity={0.8}
+        sizeAttenuation
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+      />
+    </points>
   )
 }
 
@@ -142,12 +320,64 @@ function CharacterMesh({ isMobile }) {
     scene.position.x = -center.x * scale
     scene.position.y = -center.y * scale
     scene.position.z = -center.z * scale
-    scene.traverse(c => { if (c.isMesh) c.castShadow = true })
+    scene.traverse(c => {
+      if (c.isMesh) {
+        c.castShadow = true
+        // Add emissive glow for bloom post-processing aura
+        if (c.material && !c.material.isShaderMaterial) {
+          c.material = c.material.clone()   // don't mutate shared materials
+          c.material.emissive = new THREE.Color(0x00ccff)
+          c.material.emissiveIntensity = isMobile ? 0.2 : 0.4
+          // Store ref so useFrame can animate it
+          if (!c.userData._emissiveReady) {
+            c.userData._emissiveReady = true
+          }
+        }
+      }
+    })
   }, [scene, isMobile])
 
-  useFrame(() => {
+  // Collect emissive material refs for animation
+  const materialsRef = useRef([])
+  useEffect(() => {
+    if (!scene) return
+    const mats = []
+    scene.traverse(c => {
+      if (c.isMesh && c.material && c.material.emissive) mats.push(c.material)
+    })
+    materialsRef.current = mats
+  }, [scene, isMobile])
+
+  // Divine color palette for character glow
+  const colorCyan = useMemo(() => new THREE.Color('#00E0FF'), [])
+  const colorGold = useMemo(() => new THREE.Color('#FFD060'), [])
+  const colorPurple = useMemo(() => new THREE.Color('#9B6DFF'), [])
+  const tempColor = useMemo(() => new THREE.Color(), [])
+
+  useFrame(({ clock }) => {
     if (!meshRef.current) return
-    
+    const t = clock.elapsedTime
+
+    // ── Animate emissive intensity: breathing heartbeat ──
+    const breathe = Math.sin(t * 1.5) * 0.5 + 1.0  // oscillates 0.5 to 1.5
+    const baseIntensity = isMobile ? 0.2 : 0.4
+
+    // ── Animate emissive color: divine cycle ──
+    const cycle = (t * 0.12) % 1
+    if (cycle < 0.33) {
+      tempColor.lerpColors(colorCyan, colorGold, cycle / 0.33)
+    } else if (cycle < 0.66) {
+      tempColor.lerpColors(colorGold, colorPurple, (cycle - 0.33) / 0.33)
+    } else {
+      tempColor.lerpColors(colorPurple, colorCyan, (cycle - 0.66) / 0.34)
+    }
+
+    // Apply to all character materials
+    materialsRef.current.forEach(mat => {
+      mat.emissive.copy(tempColor)
+      mat.emissiveIntensity = baseIntensity * breathe
+    })
+
     // Disable 3D rotation dragging during Mobile Phase 0
     let interactionDisabled = false;
     if (isMobile) {
@@ -214,21 +444,21 @@ export default function Character({ isMobile, frameVisible = false }) {
 
   useFrame(({ clock }) => {
     if (!floatRef.current) return
-    
+
     let isAnimating = entryRef.current < 1;
-    
+
     if (isAnimating) {
       entryRef.current = Math.min(1, clock.elapsedTime / 1.5)
       const s = 1.17 + entryRef.current * 0.13
       floatRef.current.scale.setScalar(s)
       isAnimating = entryRef.current < 1;
     }
-    
+
     const floatY = Math.sin(clock.elapsedTime * 0.7) * 0.03
-    
+
     // User requested character shouldn't move on mobile until it reaches original place
     const scrollY = (isMobile && isAnimating) ? 0 : (scrollRef.current * SCROLL_SPEED)
-    
+
     floatRef.current.position.y = -0.72 + floatY - scrollY
   })
 
@@ -239,7 +469,9 @@ export default function Character({ isMobile, frameVisible = false }) {
       Text max-width is 44vw → safe gap between text edge and character
     */
     <group ref={floatRef} position={[0.8, -0.72, 0]} scale={1.17}>
-      <RingPlatform />
+      <SunAura isMobile={isMobile} />
+      <DivineParticles isMobile={isMobile} />
+      <RingPlatform isMobile={isMobile} />
       <GroundShadow />
       <CharacterMesh isMobile={isMobile} />
     </group>
